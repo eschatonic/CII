@@ -1,13 +1,10 @@
 CivClicker II
 =======
 
-----
-
 CivClicker II is the sequel to CivClicker, a game of clicking and civilisation.
 
 Inspired by Sid Meier's Civilization series and Cookie Clicker.
 
-----
 Links
 ----
 
@@ -19,10 +16,7 @@ Links
 * [Unofficial Wiki](http://civ-clicker.wikia.com/wiki/Civ_Clicker_Wiki)
 * [CivClicker Classic](http://dhmholley.co.uk/civclicker.html)
 
-----
 License
 ----
 
 &copy; 2014 dhmholley
-
-----
