@@ -16,6 +16,12 @@ Links
 * [Unofficial Wiki](http://civ-clicker.wikia.com/wiki/Civ_Clicker_Wiki)
 * [CivClicker Classic](http://dhmholley.co.uk/civclicker.html)
 
+Uses
+----
+
+* [p5.js](http://p5js.org)
+* [toast.js](https://github.com/srackham/toast.js)
+
 License
 ----
 
