@@ -235,10 +235,12 @@ function mouseClicked(evt){
 				} else {
 					//open land
 					select(false);
-					for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
-						c.world.civilisations[0].resources[resource] += c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource];
+					if (c.world.map.grid[squareY][squareX].explored){
+						for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
+							c.world.civilisations[0].resources[resource] += c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource];
+						}
 					}
-					explore(squareY,squareX);
+					//explore(squareY,squareX);
 				}
 			}
 		}
