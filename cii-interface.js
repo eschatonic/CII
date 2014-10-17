@@ -29,7 +29,7 @@ function Interface(){
 	$('#pane-options').append("<div>Seed: " + c.player.seed + "</div>");
     
 	$('#pane-about').append("<h1>CivClicker II</h1><div>&copy;2014 dhmholley</div>");
-	$('#pane-about').append("<div>version 0.0.1</div>");
+	$('#pane-about').append("<div>version " + c.version + "</div>");
 	$('#pane-about').append("<div>&nbsp;</div>");
 	$('#pane-about').append("<div><s><a href=''>Frequently Asked Questions</a></s></div>");
 	$('#pane-about').append("<div><s><a href=''>Latest Updates</a></s></div>");
