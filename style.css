@@ -69,6 +69,13 @@ canvas {
 .actions{
     padding:10px;
 }
+.action{
+	padding:5px;
+}
+.cost{
+	font-size:0.8em;
+	color:#666;
+}
 .clearfix{
     clear:both;
 }

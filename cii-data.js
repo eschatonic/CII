@@ -85,13 +85,13 @@ function setParams(){
 	//c.params.terrain.twistedland = new Terrain("Twisted Lands",0,0,0);
 	//c.params.terrain.ruins = new Terrain("Ruins",0,0,0);
 	
-	c.params.unitTypes.settler = new UnitType("Settler",{},c.params.arrays.land,["settle"]);
-	c.params.unitTypes.worker = new UnitType("Worker",{},c.params.arrays.land,[]);
-	c.params.unitTypes.explorer = new UnitType("Explorer",{},c.params.arrays.land,[]);
-	c.params.unitTypes.soldier = new UnitType("Soldier",{},c.params.arrays.land,[]);
-	c.params.unitTypes.boat = new UnitType("Boat",{},["ocean"],["unload"]);
+	c.params.unitTypes.settler = new UnitType("Settler",{food:10},c.params.arrays.land,["settle"]);
+	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,[]);
+	c.params.unitTypes.explorer = new UnitType("Explorer",{food:10},c.params.arrays.land,[]);
+	c.params.unitTypes.soldier = new UnitType("Soldier",{food:10},c.params.arrays.land,[]);
+	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload"]);
 	
-	c.params.actions.settle = new SelectedAction("Found City",false,function(){
+	c.params.actions.settle = new SelectedAction("Found City",false,false,function(){
         if (c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].foundable){
             if (!c.world.map.grid[c.selected.location.y][c.selected.location.x].containsCity){
                 var name = prompt("Name your city");
@@ -106,7 +106,7 @@ function setParams(){
 	});
 	c.params.actions.unload = new SelectedAction("Unload",function(){
 		return c.selected.containsUnit;
-	},function(){
+	},false,function(){
 	    if (c.selected.containsUnit){
     	    var currentY = c.selected.location.y;
     	    var currentX = c.selected.location.x;
@@ -118,16 +118,18 @@ function setParams(){
     	    };
 	    }
 	});
-	c.params.actions.createSettler = new SelectedAction("Build Settler",false,function(){
+	c.params.actions.createSettler = new SelectedAction("Build Settler",false,c.params.unitTypes["settler"].cost,function(){
 	    createUnitForCiv(c.selected.civilisation,"settler",c.selected.location.y,c.selected.location.x);
 	});
-	c.params.actions.createBoat = new SelectedAction("Build Boat",false,function(){
+	c.params.actions.createBoat = new SelectedAction("Build Boat",false,c.params.unitTypes["boat"].cost,function(){
 		createUnitForCiv(c.selected.civilisation,"boat",c.selected.location.y,c.selected.location.x);
 	});
-	c.params.actions.createWorker = new SelectedAction("Build Worker",false,function(){
+	c.params.actions.createWorker = new SelectedAction("Build Worker",false,c.params.unitTypes["worker"].cost,function(){
 	    createUnitForCiv(c.selected.civilisation,"worker",c.selected.location.y,c.selected.location.x);
 	});
 	c.params.actions.expandBorders = new SelectedAction("Expand Borders",false,function(){
+		return "Food: " + prettify(Math.pow(100,c.selected.borders));
+	},function(){
 	   if (c.world.civilisations[c.selected.civilisation].resources.food >= Math.pow(100,c.selected.borders)){
 	       c.world.civilisations[c.selected.civilisation].resources.food -= Math.floor(Math.pow(100,c.selected.borders));
 	       c.selected.borders++;
@@ -140,6 +142,7 @@ function setParams(){
 	           }
 	       }
 	   }
+	   c.interface.update(true);
 	});
 }
 
@@ -174,9 +177,10 @@ function UnitType(en,cost,traverse,actions){
     this.traverse = traverse;
     this.actions = actions;
 }
-function SelectedAction(name,condition,call){
+function SelectedAction(name,condition,cost,call){
 	this.name = name;
 	this.condition = condition;
+	this.cost = cost;
     this.call = call;
 }
 

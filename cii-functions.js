@@ -123,9 +123,11 @@ function foundCity(civ,city,name,settler){
 //units
 
 function createUnitForCiv(civIndex,unitType,locY,locX){
-	var unit = new Unit(civIndex,unitType,locY,locX)
-	c.world.civilisations[civIndex].units.push(unit);
-	select(unit);
+	if (purchase(civIndex,c.params.unitTypes[unitType].cost)){
+		var unit = new Unit(civIndex,unitType,locY,locX)
+		c.world.civilisations[civIndex].units.push(unit);
+		select(unit);
+	}
 }
 function moveUnit(unit,dy,dx,keepCurrent){	
 	function canMoveTo(unit,dy,dx){
@@ -206,6 +208,18 @@ function explore(fromY,fromX){
     }
 }
 
+function purchase(civ,cost){
+	//first check affordability
+	for (var resource in cost){
+		if (c.world.civilisations[civ].resources[resource] < cost[resource]) return false;
+	}
+	//then pay
+	for (var resource in cost){
+		c.world.civilisations[civ].resources[resource] -= cost[resource];
+	}
+	return true;
+}
+
 //utility
 
 function prettify(input){
@@ -236,6 +250,20 @@ function prettify(input){
 		output = input;
 	}
 	return output;
+}
+function costToString(cost){
+	if (typeof(cost) == "function") {
+		return cost();
+	} else {
+		var output = "";
+		for (var resource in cost){
+			if (!output == "") output += ", ";
+			output += c.params.resources[resource].name.en;
+			output += ": ";
+			output += cost[resource];
+		}
+		return output;
+	}
 }
 
 //Debug

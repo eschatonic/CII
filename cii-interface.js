@@ -92,7 +92,12 @@ function Interface(){
                 selectedStr += "<div class='actions'>";
                 for (var i=0,j=c.selected.interfaceActions.length; i<j; i++){
 					if (c.params.actions[c.selected.interfaceActions[i]].condition === false || c.params.actions[c.selected.interfaceActions[i]].condition()){
+						selectedStr += "<div class='action'>";
 						selectedStr += "<button id='selected" + i + "'>" + c.params.actions[c.selected.interfaceActions[i]].name + "</button>";
+						if (c.params.actions[c.selected.interfaceActions[i]].cost){
+							selectedStr += "<span class='cost'> (" + costToString(c.params.actions[c.selected.interfaceActions[i]].cost) + ")</span>";
+						}
+						selectedStr += "</div>";
 					}
                 }
                 selectedStr += "</div>";
@@ -213,6 +218,7 @@ function checkInput(){
     }
 }
 function mouseClicked(evt){
+
 	if (mouseButton == 'left'){
 		if (evt.target.className === "tab"){
 			//change selected tab
