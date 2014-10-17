@@ -208,6 +208,13 @@ function explore(fromY,fromX){
     }
 }
 
+function createImprovement(improvement,worker){
+	c.world.map.grid[worker.location.y][worker.location.x].improvements.push(improvement);
+	c.world.map.grid[worker.location.y][worker.location.x].containsUnit = false;
+	c.world.civilisations[worker.civilisation].units.splice(c.world.civilisations[worker.civilisation].units.indexOf(worker),1);
+	select(false);
+}
+
 function purchase(civ,cost){
 	//first check affordability
 	for (var resource in cost){

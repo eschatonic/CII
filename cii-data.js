@@ -37,6 +37,7 @@ var c = {
 	    },
 		resources:{},
 		terrain:{},
+		improvements:{},
 		unitTypes:{},
 		actions:{}
 	}
@@ -54,19 +55,19 @@ function setParams(){
 	c.params.resources.metal = new Resource("Metal",false,240);
 	c.params.resources.gold = new Resource("Gold",false,270);
 	
-	c.params.terrain.ocean = new Terrain("Ocean", [0,0,255], 1, 0, 0, false);
-	c.params.terrain.ice = new Terrain("Ice", [30,144,255], 0, 0, 0, false);
-	c.params.terrain.desert = new Terrain("Desert", [255,255,0], 0, 0, 0, true);
-	c.params.terrain.savannah = new Terrain("Savannah", [154,205,50], 1, 0, 0, true);
-	c.params.terrain.woods = new Terrain("Woods", [73,128,0], 0, 1, 0, true);
-	c.params.terrain.forest = new Terrain("Forest", [0,128,0], 0, 1, 0, true);
-	c.params.terrain.rainforest = new Terrain("Rainforest", [0,84,0], 1, 1, 0, true);
-	c.params.terrain.swamp = new Terrain("Swamp", [127,82,93], 0, 0, 0, true);
-	c.params.terrain.grassland = new Terrain("Grassland", [50,205,50], 1, 0, 0, true);
-	c.params.terrain.taiga = new Terrain("Taiga", [0,128,0], 0, 1, 0, true);
-	c.params.terrain.tundra = new Terrain("Tundra", [245,255,250], 0, 0, 0, true);
-	c.params.terrain.mountains = new Terrain("Mountains", [128,128,128], 0, 0, 1, true);
-	c.params.terrain.snowpeaks = new Terrain("Snowcapped Mountains", [160,160,160], 0, 0, 1, true);
+	c.params.terrain.ocean = new Terrain("Ocean", [0,0,255], 1, 0, 0, false, []);
+	c.params.terrain.ice = new Terrain("Ice", [30,144,255], 0, 0, 0, false, []);
+	c.params.terrain.desert = new Terrain("Desert", [255,255,0], 0, 0, 0, true, []);
+	c.params.terrain.savannah = new Terrain("Savannah", [154,205,50], 1, 0, 0, true, ["farm"]);
+	c.params.terrain.woods = new Terrain("Woods", [73,128,0], 0, 1, 0, true, []);
+	c.params.terrain.forest = new Terrain("Forest", [0,128,0], 0, 1, 0, true, []);
+	c.params.terrain.rainforest = new Terrain("Rainforest", [0,84,0], 1, 1, 0, true, []);
+	c.params.terrain.swamp = new Terrain("Swamp", [127,82,93], 0, 0, 0, true, []);
+	c.params.terrain.grassland = new Terrain("Grassland", [50,205,50], 1, 0, 0, true, ["farm"]);
+	c.params.terrain.taiga = new Terrain("Taiga", [0,128,0], 0, 1, 0, true, []);
+	c.params.terrain.tundra = new Terrain("Tundra", [245,255,250], 0, 0, 0, true, []);
+	c.params.terrain.mountains = new Terrain("Mountains", [128,128,128], 0, 0, 1, true, []);
+	c.params.terrain.snowpeaks = new Terrain("Snowcapped Mountains", [160,160,160], 0, 0, 1, true, []);
 	
 	//c.params.terrain.river = new Terrain("River", 2, 0, 0);
 	//c.params.terrain.lake = new Terrain("Lake", 1, 0, 0);
@@ -86,8 +87,10 @@ function setParams(){
 	//c.params.terrain.twistedland = new Terrain("Twisted Lands",0,0,0);
 	//c.params.terrain.ruins = new Terrain("Ruins",0,0,0);
 	
+	c.params.improvements.farm = new Improvement("Farm",{food:1});
+	
 	c.params.unitTypes.settler = new UnitType("Settler",{food:10},c.params.arrays.land,["settle"]);
-	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,[]);
+	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,["buildFarm"]);
 	c.params.unitTypes.explorer = new UnitType("Explorer",{food:10},c.params.arrays.land,[]);
 	c.params.unitTypes.soldier = new UnitType("Soldier",{food:10},c.params.arrays.land,[]);
 	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload"]);
@@ -104,6 +107,11 @@ function setParams(){
                 }
             }
         }
+	});
+	c.params.actions.buildFarm = new SelectedAction("Build Farm",function(){
+		return c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("farm") > -1;
+	},false,function(){
+		createImprovement("farm",c.selected);
 	});
 	c.params.actions.unload = new SelectedAction("Unload",function(){
 		return c.selected.containsUnit;
@@ -154,7 +162,7 @@ function Resource(en,active,xOffset){
 	};
 	this.active = active;
 }
-function Terrain(en,color,pfood,pwood,pstone,foundable){
+function Terrain(en,color,pfood,pwood,pstone,foundable,improvements){
 	this.name = {
 		en:en
 	};
@@ -169,6 +177,7 @@ function Terrain(en,color,pfood,pwood,pstone,foundable){
 		wood:pwood,
 		stone:pstone
 	};
+	this.improvements = improvements;
 }
 function UnitType(en,cost,traverse,actions){
     this.name = {
@@ -199,7 +208,13 @@ function MapSquare(y,x){
 	this.containsCity = false;
 	this.containsUnit = false;
 	
-	this.improvements = {};
+	this.improvements = [];
+}
+function Improvement(name,bonus){
+	this.name = {
+		en:name
+	};
+	this.bonus = bonus;
 }
 
 function Civilisation(isPlayer,index){

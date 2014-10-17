@@ -71,6 +71,9 @@ function Interface(){
         if (c.settings.focus){
             if (c.settings.focus.explored){
                 focus += "<div>" + c.params.terrain[c.settings.focus.terrain].name.en + "</div>";
+				for (var improvement in c.settings.focus.improvements){
+					focus += "<div>&lt;" + c.params.improvements[c.settings.focus.improvements[improvement]].name.en + "&gt;</div>"
+				}
                 if (c.settings.focus.containsCity){
                     focus += "<div>" + c.world.civilisations[c.settings.focus.containsCity.civilisation].name + " - " + c.settings.focus.containsCity.name + "</div";
                 }
@@ -262,6 +265,7 @@ function keyPressed() {
     } else if (keyCode === RIGHT_ARROW) {
         if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,0,1,c.selected.hidden);
     } else if (keyCode === RETURN) {}
+	c.interface.update(true);
 }
 
 document.addEventListener("DOMMouseScroll",mouseWheel,false); //firefox
