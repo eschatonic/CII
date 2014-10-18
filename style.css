@@ -49,6 +49,12 @@ canvas {
 #pane-about div, #pane-options div{
 	margin:0.5em 0;
 }
+#impExpField{
+	width:94%;
+	margin:3%;
+	height:8em;
+}
+
 #controls{
 	padding:10px;
 	text-align:left;

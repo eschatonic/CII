@@ -292,21 +292,58 @@ function revealAll(){
 
 //save/load
 function saveGame(saveType){
-    localStorage.setItem("player",JSON.stringify(c.player));
-	localStorage.setItem("settings",JSON.stringify(c.settings));
-    localStorage.setItem("world",JSON.stringify(c.world));
-	if (saveType == "auto") Toast.info("Autosaved");
-	if (saveType == "manual") Toast.info("Saved Game");
+	if (saveType == "export"){
+		var string = '[' + JSON.stringify(c.player) + ',' + JSON.stringify(c.settings) + ',' + JSON.stringify(c.world) + ']';
+		var compressed = LZString.compressToBase64(string);
+		console.log('Compressing Save');
+		console.log('Compressed from ' + string.length + ' to ' + compressed.length + ' characters');
+		document.getElementById('impExpField').value = compressed;
+		Toast.info('Exported. Keep your code safe!');
+	} else {
+		localStorage.setItem("player",JSON.stringify(c.player));
+		localStorage.setItem("settings",JSON.stringify(c.settings));
+		localStorage.setItem("world",JSON.stringify(c.world));
+		
+		if (saveType == "auto") Toast.info("Autosaved");
+		if (saveType == "manual") Toast.info("Saved Game");
+	}
 }
-function loadGame(){
-    var player = JSON.parse(localStorage.getItem("player"));
-	var settings = JSON.parse(localStorage.getItem("settings"));
-	var world = JSON.parse(localStorage.getItem("world"));
-    
-    if (player) c.player = player;
-	if (settings) c.settings = $.extend(true,c.settings,settings);
-    if (world) c.world = $.extend(true,c.world,world);
-	
+function loadGame(loadType){
+	var player, setttings, world;
+	if (loadType == "import"){
+		try {
+			//console.log($('#impExpField').val());
+			
+			var compressed = $('#impExpField').val();
+			var decompressed = LZString.decompressFromBase64(compressed);
+			var revived = JSON.parse(decompressed);
+			player = revived[0];
+			settings = revived[1];
+			world = revived[2];
+			Toast.info('Imported saved game');
+			
+		} catch (err){
+			Toast.error('Could not import string');
+			return false;
+		}
+		if (player) c.player = player;
+		if (settings) c.settings = settings;
+		if (world) c.world = world;
+		
+		randomSeed(c.player.seed);
+        noiseSeed(c.player.seed);
+		setContainsUnit();
+		versionCheck();
+	} else {
+		player = JSON.parse(localStorage.getItem("player"));
+		settings = JSON.parse(localStorage.getItem("settings"));
+		world = JSON.parse(localStorage.getItem("world"));
+		
+		if (player) c.player = player;
+		if (settings) c.settings = $.extend(true,c.settings,settings);
+		if (world) c.world = $.extend(true,c.world,world);
+	}
+		
 	return (player && settings && world);
 }
 function setContainsUnit(){

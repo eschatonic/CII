@@ -18,6 +18,7 @@ function setup(){
     	c.world.civilisations[0] = new Civilisation(true,0);
     } else {
 		//loaded
+		Toast.info("Loaded saved game")
         randomSeed(c.player.seed);
         noiseSeed(c.player.seed);
 		setContainsUnit();

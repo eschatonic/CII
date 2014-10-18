@@ -25,8 +25,13 @@ function Interface(){
 	
 	$('#pane-options').append("<div>&nbsp;</div>");
 	$('#pane-options').append("<div><button onclick='saveGame(\"manual\")'>Save</button>&nbsp;<button onclick='deleteSave()'>Delete Save</button>");
+	$('#pane-options').append("<div id='impExp'></div>");
 	$('#pane-options').append("<div>&nbsp;</div>");
 	$('#pane-options').append("<div>Seed: " + c.player.seed + "</div>");
+	
+	$('#impExp').append('<textarea id="impExpField"></textarea>');
+	$('#impExp').append('<button class="export" onclick="saveGame(\'export\');">Export Save</button>');
+	$('#impExp').append('<button class="import" onclick="loadGame(\'import\');">Import Save</button>');
     
 	$('#pane-about').append("<h1>CivClicker II</h1><div>&copy;2014 dhmholley</div>");
 	$('#pane-about').append("<div>version " + c.version + "</div>");
