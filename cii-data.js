@@ -2,7 +2,7 @@
 //constructors, objects, and methods for manipulating the data structure
 
 var c = {
-	version:"0.0.3",
+	version:"0.0.4",
     //dynamic
 	interface:false,
     selected:false,
@@ -111,17 +111,17 @@ function setParams(){
         }
 	});
 	c.params.actions.buildFarm = new SelectedAction("Build Farm",function(){
-		return c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("farm") > -1;
+		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("farm") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("farm") > -1);
 	},false,function(){
 		createImprovement("farm",c.selected);
 	});
 	c.params.actions.buildMine = new SelectedAction("Build Mine",function(){
-		return c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("mine") > -1;
+		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("mine") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("mine") > -1);
 	},false,function(){
 		createImprovement("mine",c.selected);
 	});
 	c.params.actions.buildLumberCamp = new SelectedAction("Build Lumber Camp",function(){
-		return c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("lumberCamp") > -1;
+		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("lumberCamp") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("lumberCamp") > -1);
 	},false,function(){
 		createImprovement("lumberCamp",c.selected);
 	});

@@ -67,10 +67,8 @@ function tick(){
 		for (var j=0; j<c.settings.mapX; j++){
 			if (c.world.map.grid[i][j].owned){
 				if (c.world.map.grid[i][j].improvements.length > 0){
-					console.log(c.world.map.grid[i][j].improvements)
 					for (var improvement in c.world.map.grid[i][j].improvements){
 						for (var resource in c.world.map.grid[i][j].improvements[improvement].bonus){
-							console.log(improvement,resource);
 							c.world.civilisations[c.world.map.grid[i][j].owned].resources[resource] += c.world.map.grid[i][j].improvements[improvement].bonus[resource];
 						}
 					}
@@ -78,10 +76,24 @@ function tick(){
 			}
 		}
 	}
-	
-	
-	
-    //working tiles with worker units. change how this works later
+	for (var i=0;i<c.settings.mapY;i++){
+		for (var j=0;j<c.settings.mapX;j++){
+			var square = c.world.map.grid[i][j]
+			if (square.improvements.length > 0){
+				if (square.owned > -1){
+					for (var improvement in square.improvements){					
+						for (var resource in c.params.resources){
+							if (c.params.improvements[square.improvements[improvement]].bonus.hasOwnProperty(resource)){
+								c.world.civilisations[square.owned].resources[resource] += c.params.improvements[square.improvements[improvement]].bonus[resource];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+    //working tiles with worker units (this is old, remove later)
+	/*
     for (var civilisation in c.world.civilisations){
         for (var unit in c.world.civilisations[civilisation].units){
             var unit = c.world.civilisations[civilisation].units[unit]
@@ -94,4 +106,5 @@ function tick(){
             }
         }
     }
+	*/
 }

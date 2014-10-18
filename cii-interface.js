@@ -94,6 +94,10 @@ function Interface(){
                 var civ = c.world.civilisations[c.selected.civilisation]
                 var name = c.selected.unitType ? c.params.unitTypes[c.selected.unitType].name.en : c.selected.name;
                 selectedStr += "<div>" + civ.name + " - " + name + "</div>";
+				selectedStr += "<div>" + c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].name.en + "</div>";
+				for (var improvement in c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements){
+					selectedStr += "<div>&lt;" + c.params.improvements[c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements[improvement]].name.en + "&gt;</div>"
+				}
                 selectedStr += "<div class='actions'>";
                 for (var i=0,j=c.selected.interfaceActions.length; i<j; i++){
 					if (c.params.actions[c.selected.interfaceActions[i]].condition === false || c.params.actions[c.selected.interfaceActions[i]].condition()){
