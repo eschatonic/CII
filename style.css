@@ -60,10 +60,13 @@ canvas {
 	text-align:right;
 }
 .resource-icon span{
-	display:block;
+	display:inline-block;
 	height:20px;
 	width:20px;
-	margin-left:5px;
+	margin:0 8px 0 0;
+}
+.resource-icon.per-sec span{
+	margin:0;
 }
 .icon-food{
 	background:url(icons/food.png) no-repeat;
@@ -110,7 +113,10 @@ canvas {
 	padding:10px;
 }
 .focus{
-    height:6em;
+    height:10em;
+}
+.focus table{
+	margin:0 auto;
 }
 .actions{
     padding:10px;

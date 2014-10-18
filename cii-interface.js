@@ -73,15 +73,16 @@ function Interface(){
         if (c.settings.focus){
             if (c.settings.focus.explored){
                 focus += "<div>" + c.params.terrain[c.settings.focus.terrain].name.en + "</div>";
+				focus += "<table><tr class='resource-icon'><td>" + c.params.terrain[c.settings.focus.terrain].production.food + "</td><td><span class='icon-food'></span></td><td>" + c.params.terrain[c.settings.focus.terrain].production.wood + "</td><td><span class='icon-wood'></span></td><td>" + c.params.terrain[c.settings.focus.terrain].production.stone + "</td><td><span class='icon-stone'></span></td>" + "</tr></table>";
 				for (var improvement in c.settings.focus.improvements){
-					focus += "<div>&lt;" + c.params.improvements[c.settings.focus.improvements[improvement]].name.en + "&gt;</div>"
+					focus += "<span>[" + c.params.improvements[c.settings.focus.improvements[improvement]].name.en + "] </span>";
 				}
                 if (c.settings.focus.containsCity){
                     focus += "<div>" + c.world.civilisations[c.settings.focus.containsCity.civilisation].name + " - " + c.settings.focus.containsCity.name + "</div";
                 }
                 if (c.settings.focus.containsUnit){
                     var unit = c.settings.focus.containsUnit;
-                    focus += "<div>" + c.world.civilisations[unit.civilisation].name + " - " + c.params.unitTypes[unit.unitType].name.en + "</div";
+                    focus += "<div style='margin-top:10px'>" + c.world.civilisations[unit.civilisation].name + " - " + c.params.unitTypes[unit.unitType].name.en + "</div";
                 }
             }
         }

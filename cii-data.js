@@ -92,7 +92,7 @@ function setParams(){
 	c.params.improvements.mine = new Improvement("Mine",{stone:1});
 	
 	c.params.unitTypes.settler = new UnitType("Settler",{food:10},c.params.arrays.land,["settle"]);
-	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,["buildFarm","buildMine","buildLumberCamp"]);
+	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,["work","buildFarm","buildMine","buildLumberCamp"]);
 	c.params.unitTypes.explorer = new UnitType("Explorer",{food:10},c.params.arrays.land,[]);
 	c.params.unitTypes.soldier = new UnitType("Soldier",{food:10},c.params.arrays.land,[]);
 	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload"]);
@@ -109,6 +109,11 @@ function setParams(){
                 }
             }
         }
+	});
+	c.params.actions.work = new SelectedAction("Work Land",function(){
+		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].owned == c.selected.civilisation && !c.world.map.grid[c.selected.location.y][c.selected.location.x].worked);
+	},false,function(){
+		workLand(c.selected);
 	});
 	c.params.actions.buildFarm = new SelectedAction("Build Farm",function(){
 		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("farm") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("farm") > -1);

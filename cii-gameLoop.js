@@ -79,6 +79,13 @@ function tick(){
 	for (var i=0;i<c.settings.mapY;i++){
 		for (var j=0;j<c.settings.mapX;j++){
 			var square = c.world.map.grid[i][j]
+			//workers can work tiles (autoclick)
+			if (square.worked){
+				for (var resource in c.params.terrain[square.terrain].production){
+					c.world.civilisations[square.owned].resources[resource] += c.params.terrain[square.terrain].production[resource];
+				}
+			}
+			//workers can create improvements
 			if (square.improvements.length > 0){
 				if (square.owned > -1){
 					for (var improvement in square.improvements){					
@@ -90,6 +97,8 @@ function tick(){
 					}
 				}
 			}
+			//cities slowly generate their own food
+			if (square.containsCity) c.world.civilisations[square.owned].resources.food += 1;
 		}
 	}
     //working tiles with worker units (this is old, remove later)
