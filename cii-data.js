@@ -145,8 +145,8 @@ function setParams(){
 	       for (var i=0-c.selected.borders; i<c.selected.borders+1; i++){
 	           for (var j=0-c.selected.borders; j<c.selected.borders+1; j++){
 	               if (Math.sqrt(Math.pow(i,2)+Math.pow(j,2)) <= c.selected.borders + 0.5){
-	                   c.world.map.grid[c.selected.location.y + i][c.selected.location.x + j].owned = c.selected.civilisation;
-	                   explore(c.selected.location.y + i,c.selected.location.x + j);
+	                   c.world.map.grid[getTargetY(c.selected.location.y + i)][getTargetX(c.selected.location.x + j)].owned = c.selected.civilisation;
+	                   explore(getTargetY(c.selected.location.y + i),getTargetX(c.selected.location.x + j));
 	               }
 	           }
 	       }

@@ -137,25 +137,25 @@ function drawMap(map,gridFocusY,gridFocusX){
 function drawBorders(y,x){
     var owner = c.world.map.grid[y][x].owned;
     stroke(c.world.civilisations[owner].color.red,c.world.civilisations[owner].color.green,c.world.civilisations[owner].color.blue);
-    if (c.world.map.grid[y-1][x].owned != owner) line(
+    if (c.world.map.grid[getTargetY(y-1)][getTargetX(x)].owned != owner) line(
 		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel
 	);
-    if (c.world.map.grid[y+1][x].owned != owner) line(
+    if (c.world.map.grid[getTargetY(y+1)][getTargetX(x)].owned != owner) line(
 		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((y + 1 - c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((y + 1 - c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel
 	);
-    if (c.world.map.grid[y][x-1].owned != owner) line(
+    if (c.world.map.grid[getTargetY(y)][getTargetX(x-1)].owned != owner) line(
 		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((y + 1 - c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel
 	);
-    if (c.world.map.grid[y][x+1].owned != owner) line(
+    if (c.world.map.grid[getTargetY(y)][getTargetX(x+1)].owned != owner) line(
 		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
 		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,

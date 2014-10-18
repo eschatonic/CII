@@ -88,6 +88,19 @@ function generateMapSquare(map,y,x){
 	}
 }
 
+function getTargetY(y){
+	var output = y;
+	if (output < 0) output = 0;
+	if (output >= c.settings.mapY) output = c.settings.mapY - 1;
+	return output;
+}
+function getTargetX(x){
+	var output = x;
+	if (output < 0) output += c.settings.mapX;
+	if (output >= c.settings.mapX) output -= c.settings.mapX;
+	return output;
+}
+
 //cities
 
 function foundCity(civ,city,name,settler){
@@ -107,7 +120,7 @@ function foundCity(civ,city,name,settler){
 	
 	for (var i=-1; i<2; i++){
 		for (var j=-1; j<2; j++){
-			c.world.map.grid[settler.location.y + i][settler.location.x + j].owned = settler.civilisation;
+			c.world.map.grid[getTargetY(settler.location.y + i)][getTargetX(settler.location.x + j)].owned = settler.civilisation;
 		}
 	}
 	c.world.map.grid[settler.location.y][settler.location.x].containsCity = city;
@@ -127,14 +140,8 @@ function createUnitForCiv(civIndex,unitType,locY,locX){
 }
 function moveUnit(unit,dy,dx,keepCurrent){	
 	function canMoveTo(unit,dy,dx){
-		var targetY = unit.location.y + dy;
-		var targetX = unit.location.x + dx;
-		if (targetY < 0) targetY = 0;
-		if (targetY >= c.settings.mapY) targetY = c.settings.mapY - 1;
-		if (targetX < 0) targetX += c.settings.mapX;
-		if (targetX >= c.settings.mapX) targetX -= c.settings.mapX;
 		for (var terrain in c.params.unitTypes[unit.unitType].traverse){
-			if (c.params.unitTypes[unit.unitType].traverse[terrain] == c.world.map.grid[targetY][targetX].terrain) return true;
+			if (c.params.unitTypes[unit.unitType].traverse[terrain] == c.world.map.grid[getTargetY(unit.location.y + dy)][getTargetX(unit.location.x + dx)].terrain) return true;
 		}
 		return false;
 	}
