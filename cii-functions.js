@@ -86,10 +86,6 @@ function generateMapSquare(map,y,x){
 			square.terrain = "snowpeaks";
 		}
 	}
-	for (var resource in c.params.resources){
-		//tiles initially generate with no improvements
-		square.improvements[resource] = 0;
-	}
 }
 
 //cities
@@ -324,4 +320,32 @@ function deleteSave(){
 		localStorage.removeItem("settings");
 		localStorage.removeItem("world");
     }
+}
+
+function versionCheck(){
+	var currentVersion = parseVersion(c.version);
+	var playerVersion = parseVersion(c.player.version);
+	if (currentVersion[0] >= playerVersion[0]){
+		if (currentVersion[1] >= playerVersion[1]){
+			if (currentVersion[2] > playerVersion[2]){
+				runUpdates(playerVersion);
+			}
+		}
+	}
+}
+function parseVersion(versionStr){
+	try{
+		var output = versionStr.split(".");
+		for (var i=0;i<output.length;i++){
+			output[i] = parseInt(output[i]);
+		}
+		return output;
+	} catch(err){
+		return [0,0,0];
+	}
+}
+function runUpdates(playerVersion){
+	//run version updates here
+	//finally update version
+	c.version.player = c.version;
 }

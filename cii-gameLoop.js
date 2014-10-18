@@ -8,7 +8,8 @@ function setup(){
         //start from scratch
         c.player = {
             name:"Sid Meier",
-            seed:Math.floor(Math.random() * 99999999)
+            seed:Math.floor(Math.random() * 99999999),
+			version:c.version
         }
         randomSeed(c.player.seed);
         noiseSeed(c.player.seed);
@@ -20,6 +21,7 @@ function setup(){
         randomSeed(c.player.seed);
         noiseSeed(c.player.seed);
 		setContainsUnit();
+		versionCheck();
     }
 	
 	c.settings.squareSize = Math.floor(Math.min(($(document).width()-c.settings.interfaceWidth)/c.settings.mapX,$(document).height()/c.settings.mapY));
