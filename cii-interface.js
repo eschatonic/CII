@@ -61,6 +61,8 @@ function Interface(){
 				strResources += c.params.resources[resource].name.en;
 				strResources += ": </td><td class='resource-value'>"
 				strResources += prettify(c.world.civilisations[0].resources[resource]);
+				strResources += "</td><td class='resource-icon'>";
+				strResources += "<span class='icon-" + resource + "'></span>"
 				strResources += "</td></tr>"
 			}
         }

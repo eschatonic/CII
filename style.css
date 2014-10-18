@@ -59,6 +59,52 @@ canvas {
 .resource-value{
 	text-align:right;
 }
+.resource-icon span{
+	display:block;
+	height:20px;
+	width:20px;
+	margin-left:5px;
+}
+.icon-food{
+	background:url(icons/food.png) no-repeat;
+	background-size: contain;
+}
+.icon-wood{
+	background:url(icons/wood.png) no-repeat;
+	background-size: contain;
+}
+.icon-stone{
+	background:url(icons/stone.png) no-repeat;
+	background-size: contain;
+}
+.icon-skins{
+	background:url(icons/skins.png) no-repeat;
+	background-size: contain;
+}
+.icon-herbs{
+	background:url(icons/herbs.png) no-repeat;
+	background-size: contain;
+}
+.icon-ore{
+	background:url(icons/ore.png) no-repeat;
+	background-size: contain;
+}
+.icon-leather{
+	background:url(icons/leather.png) no-repeat;
+	background-size: contain;
+}
+.icon-piety{
+	background:url(icons/piety.png) no-repeat;
+	background-size: contain;
+}
+.icon-metal{
+	background:url(icons/metal.png) no-repeat;
+	background-size: contain;
+}
+.icon-gold{
+	background:url(icons/gold.png) no-repeat;
+	background-size: contain;
+}
 .resources, .focus{
     margin-bottom:1em;
 	padding:10px;
