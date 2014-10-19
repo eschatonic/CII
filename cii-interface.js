@@ -83,11 +83,11 @@ function Interface(){
 					focus += "<span>[" + c.params.improvements[c.settings.focus.improvements[improvement]].name.en + "] </span>";
 				}
                 if (c.settings.focus.containsCity){
-                    focus += "<div>" + c.world.civilisations[c.settings.focus.containsCity.civilisation].name + " - " + c.settings.focus.containsCity.name + "</div";
+                    focus += "<div>" + c.world.civilisations[c.settings.focus.containsCity.civilisation].name + " - " + c.settings.focus.containsCity.name + "</div>";
                 }
                 if (c.settings.focus.containsUnit){
                     var unit = c.settings.focus.containsUnit;
-                    focus += "<div style='margin-top:10px'>" + c.world.civilisations[unit.civilisation].name + " - " + c.params.unitTypes[unit.unitType].name.en + "</div";
+                    focus += "<div style='margin-top:10px'>" + c.world.civilisations[unit.civilisation].name + " - " + c.params.unitTypes[unit.unitType].name.en + "</div>";
                 }
             }
         }
