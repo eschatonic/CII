@@ -309,6 +309,7 @@ function saveGame(saveType){
 		if (saveType == "auto") Toast.info("Autosaved");
 		if (saveType == "manual") Toast.info("Saved Game");
 	}
+	_gaq.push(['_trackEvent', 'CivClicker II', 'Save', savetype]);
 }
 function loadGame(loadType){
 	var player, setttings, world;
