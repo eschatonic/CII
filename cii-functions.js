@@ -300,6 +300,8 @@ function saveGame(saveType){
 		document.getElementById('impExpField').value = compressed;
 		Toast.info('Exported. Keep your code safe!');
 	} else {
+		if (saveType == "auto" && c.player.disableAutosave) return false;
+		
 		localStorage.setItem("player",JSON.stringify(c.player));
 		localStorage.setItem("settings",JSON.stringify(c.settings));
 		localStorage.setItem("world",JSON.stringify(c.world));
@@ -369,6 +371,17 @@ function deleteSave(){
 		localStorage.removeItem("settings");
 		localStorage.removeItem("world");
     }
+}
+function toggleAutosave(){
+	if (c.player.disableAutosave){
+		c.player.disableAutosave = false;
+		Toast.info("Autosave enabled");
+		$('#autosaveToggle').text("Disable Autosave");
+	} else {
+		c.player.disableAutosave = true;
+		Toast.info("Autosave disabled");
+		$('#autosaveToggle').text("Enable Autosave");
+	}
 }
 
 function versionCheck(){

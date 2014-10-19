@@ -9,6 +9,7 @@ function setup(){
         c.player = {
             name:"Sid Meier",
             seed:Math.floor(Math.random() * 99999999),
+			disableAutosave:false,
 			version:c.version
         }
         randomSeed(c.player.seed);

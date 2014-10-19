@@ -24,7 +24,7 @@ function Interface(){
     $('#pane-game').append("<div class='selected'></div>");
 	
 	$('#pane-options').append("<div>&nbsp;</div>");
-	$('#pane-options').append("<div><button onclick='saveGame(\"manual\")'>Save</button>&nbsp;<button onclick='deleteSave()'>Delete Save</button>");
+	$('#pane-options').append("<div><button onclick='saveGame(\"manual\")'>Save</button>&nbsp;<button id='autosaveToggle' onclick='toggleAutosave()'>" + (c.player.disableAutosave ? "Enable" : "Disable") + " Autosave</button>&nbsp;<button onclick='deleteSave()'>Delete Save</button>");
 	$('#pane-options').append("<div id='impExp'></div>");
 	$('#pane-options').append("<div>&nbsp;</div>");
 	$('#pane-options').append("<div>Seed: " + c.player.seed + "</div>");
