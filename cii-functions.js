@@ -179,9 +179,10 @@ function moveUnit(unit,dy,dx,keepCurrent){
 		explore(unit.location.y,unit.location.x);
 		
 		if (unit.hidden){
-			c.world.map.grid[fromY][fromX].containsUnit.containsUnit = false;
 			for (var containerUnit in c.world.map.grid[fromY][fromX].containsUnit){
-				if (c.world.map.grid[fromY][fromX].containsUnit[containerUnit].containsUnit.indexOf(unit)) c.world.map.grid[fromY][fromX].containsUnit[containerUnit].splice(c.world.map.grid[fromY][fromX].containsUnit[containerUnit].indexOf(unit),1)
+				if (c.world.map.grid[fromY][fromX].containsUnit[containerUnit].containsUnit.indexOf(unit) > -1){
+					c.world.map.grid[fromY][fromX].containsUnit[containerUnit].containsUnit.splice(c.world.map.grid[fromY][fromX].containsUnit[containerUnit].containsUnit.indexOf(unit),1)
+				}
 			}
 			unit.hidden = false;
 		}
