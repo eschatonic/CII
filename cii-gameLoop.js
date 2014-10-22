@@ -103,19 +103,4 @@ function tick(){
 			if (square.containsCity) c.world.civilisations[square.owned].resources.food += 1;
 		}
 	}
-    //working tiles with worker units (this is old, remove later)
-	/*
-    for (var civilisation in c.world.civilisations){
-        for (var unit in c.world.civilisations[civilisation].units){
-            var unit = c.world.civilisations[civilisation].units[unit]
-            if (unit.unitType == "worker"){
-                if (c.world.map.grid[unit.location.y][unit.location.x].owned == civilisation){
-                    for (var resource in c.params.terrain[c.world.map.grid[unit.location.y][unit.location.x].terrain].production){
-    					c.world.civilisations[civilisation].resources[resource] += c.params.terrain[c.world.map.grid[unit.location.y][unit.location.x].terrain].production[resource];
-    				}
-                }
-            }
-        }
-    }
-	*/
 }

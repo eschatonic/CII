@@ -85,9 +85,10 @@ function Interface(){
                 if (c.settings.focus.containsCity){
                     focus += "<div>" + c.world.civilisations[c.settings.focus.containsCity.civilisation].name + " - " + c.settings.focus.containsCity.name + "</div>";
                 }
-                if (c.settings.focus.containsUnit){
-                    var unit = c.settings.focus.containsUnit;
-                    focus += "<div style='margin-top:10px'>" + c.world.civilisations[unit.civilisation].name + " - " + c.params.unitTypes[unit.unitType].name.en + "</div>";
+                if (c.settings.focus.containsUnit.length > 0){
+                    for (var unit in c.settings.focus.containsUnit){
+						focus += "<div style='margin-top:10px'>" + c.world.civilisations[c.settings.focus.containsUnit[unit].civilisation].name + " - " + c.params.unitTypes[c.settings.focus.containsUnit[unit].unitType].name.en + "</div>";
+					}
                 }
             }
         }
@@ -247,14 +248,25 @@ function mouseClicked(evt){
 			if (mouseY < c.settings.mapY * c.settings.squareSize){
 				var squareY = Math.floor((mouseY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
 				var squareX = Math.floor((mouseX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-				if (c.world.map.grid[squareY][squareX].containsUnit && c.world.map.grid[squareY][squareX].containsUnit != c.selected) {
-					//unit context menu
-					select(c.world.map.grid[squareY][squareX].containsUnit)
-				} else if (c.world.map.grid[squareY][squareX].containsCity){
-					//city context menu
-					select(c.world.map.grid[squareY][squareX].containsCity);
+				//if there is a unit or a city
+				if (c.world.map.grid[squareY][squareX].containsUnit.length > 0 || c.world.map.grid[squareY][squareX].containsCity) {
+					//first attempt to cycle to the next unit
+					selectedIndex = c.world.map.grid[squareY][squareX].containsUnit.indexOf(c.selected) + 1; //will return -1 unless one of the units is already selected, meaning that it defaults to the first unit in the array
+					//next check if we're past the end of the unit list
+					if (selectedIndex >= c.world.map.grid[squareY][squareX].containsUnit.length){
+						//if so, attempt to select a city
+						if (c.world.map.grid[squareY][squareX].containsCity){
+							select(c.world.map.grid[squareY][squareX].containsCity);
+						} else {
+							// if not, select the first unit again
+							select(c.world.map.grid[squareY][squareX].containsUnit[0])
+						}
+					} else {
+						//we're not past the end of the list so just go ahead and select that unit
+						select(c.world.map.grid[squareY][squareX].containsUnit[selectedIndex])
+					}
 				} else {
-					//open land
+					//you clicked on open land!
 					select(false);
 					if (c.world.map.grid[squareY][squareX].explored){
 						for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){

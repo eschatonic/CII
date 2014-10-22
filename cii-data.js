@@ -131,13 +131,13 @@ function setParams(){
 		createImprovement("lumberCamp",c.selected);
 	});
 	c.params.actions.unload = new SelectedAction("Unload",function(){
-		return c.selected.containsUnit;
+		return c.selected.containsUnit.length > 0;
 	},false,function(){
-	    if (c.selected.containsUnit){
+	    if (c.selected.containsUnit.length > 0){
     	    var currentY = c.selected.location.y;
     	    var currentX = c.selected.location.x;
             var from = c.selected;
-    	    select(c.selected.containsUnit);
+    	    select(c.selected.containsUnit[0]);
     	    c.selected.location = {
     	        y:currentY,
     	        x:currentX
@@ -223,7 +223,7 @@ function MapSquare(y,x){
 	this.explored = false;
 	this.owned = -1;
 	this.containsCity = false;
-	this.containsUnit = false;
+	this.containsUnit = [];
 	
 	this.improvements = [];
 }
@@ -293,7 +293,7 @@ function Unit(civ,unitType,y,x){
 	    x:x
 	};
 	this.interfaceActions = c.params.unitTypes[unitType].actions;
-	this.containsUnit = false;
+	this.containsUnit = [];
 	
-	c.world.map.grid[y][x].containsUnit = this;
+	c.world.map.grid[y][x].containsUnit.push(this);
 }

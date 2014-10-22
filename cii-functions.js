@@ -124,7 +124,7 @@ function foundCity(civ,city,name,settler){
 		}
 	}
 	c.world.map.grid[settler.location.y][settler.location.x].containsCity = city;
-	c.world.map.grid[settler.location.y][settler.location.x].containsUnit = false;
+	c.world.map.grid[settler.location.y][settler.location.x].containsUnit.splice(c.world.map.grid[settler.location.y][settler.location.x].containsUnit.indexOf(settler),1);
 	
 	civ.units.splice(civ.units.indexOf(settler),1);
 }
@@ -152,16 +152,18 @@ function moveUnit(unit,dy,dx,keepCurrent){
 		if (targetY >= c.settings.mapY) targetY = c.settings.mapY - 1;
 		if (targetX < 0) targetX += c.settings.mapX;
 		if (targetX >= c.settings.mapX) targetX -= c.settings.mapX;
-		if (c.world.map.grid[targetY][targetX].containsUnit){
-			if (c.world.map.grid[targetY][targetX].containsUnit.interfaceActions.indexOf("unload") > -1 && !c.world.map.grid[targetY][targetX].containsUnit.containsUnit){
-				return [targetY,targetX];
+		if (c.world.map.grid[targetY][targetX].containsUnit.length > 0){
+			for (var unit in c.world.map.grid[targetY][targetX].containsUnit){
+				if (c.world.map.grid[targetY][targetX].containsUnit[unit].interfaceActions.indexOf("unload") > -1 && c.world.map.grid[targetY][targetX].containsUnit[unit].containsUnit.length == 0){
+					return c.world.map.grid[targetY][targetX].containsUnit[unit];
+				}
 			}
 		}
 		return false;
 	}
 	
 	if (canMoveTo(unit,dy,dx)){
-		if (!keepCurrent) c.world.map.grid[unit.location.y][unit.location.x].containsUnit = false;
+		if (!keepCurrent) c.world.map.grid[unit.location.y][unit.location.x].containsUnit.splice(c.world.map.grid[unit.location.y][unit.location.x].containsUnit.indexOf(unit),1);
 		var fromY = unit.location.y;
 		var fromX = unit.location.x;
 		
@@ -173,20 +175,23 @@ function moveUnit(unit,dy,dx,keepCurrent){
 		if (unit.location.x < 0) unit.location.x += c.settings.mapX;
 		if (unit.location.x >= c.settings.mapX) unit.location.x -= c.settings.mapX;
 		
-		c.world.map.grid[unit.location.y][unit.location.x].containsUnit = unit;
+		c.world.map.grid[unit.location.y][unit.location.x].containsUnit.push(unit);
 		explore(unit.location.y,unit.location.x);
 		
 		if (unit.hidden){
 			c.world.map.grid[fromY][fromX].containsUnit.containsUnit = false;
+			for (var containerUnit in c.world.map.grid[fromY][fromX].containsUnit){
+				if (c.world.map.grid[fromY][fromX].containsUnit[containerUnit].containsUnit.indexOf(unit)) c.world.map.grid[fromY][fromX].containsUnit[containerUnit].splice(c.world.map.grid[fromY][fromX].containsUnit[containerUnit].indexOf(unit),1)
+			}
 			unit.hidden = false;
 		}
 	} else {
 		var load = canLoadTo(unit,dy,dx); //value used later if truthy
 		if (load) {
 			unit.hidden = true;
-			c.world.map.grid[unit.location.y][unit.location.x].containsUnit = false;
-			c.world.map.grid[load[0]][load[1]].containsUnit.containsUnit = unit;
-			select(c.world.map.grid[load[0]][load[1]].containsUnit);
+			c.world.map.grid[unit.location.y][unit.location.x].containsUnit.splice(c.world.map.grid[unit.location.y][unit.location.x].containsUnit.indexOf(unit),1);
+			load.containsUnit.push(unit);
+			select(load);
 		}
 	}
 }
@@ -218,7 +223,7 @@ function workLand(worker){
 }
 function createImprovement(improvement,worker){
 	c.world.map.grid[worker.location.y][worker.location.x].improvements.push(improvement);
-	c.world.map.grid[worker.location.y][worker.location.x].containsUnit = false;
+	c.world.map.grid[worker.location.y][worker.location.x].containsUnit.splice(c.world.map.grid[worker.location.y][worker.location.x].containsUnit.indexOf(worker),1);
 	c.world.civilisations[worker.civilisation].units.splice(c.world.civilisations[worker.civilisation].units.indexOf(worker),1);
 	select(false);
 }
@@ -353,7 +358,7 @@ function setContainsUnit(){
 	//first clear all
 	for (var y=0; y<c.settings.mapY; y++){
         for (var x=0; x<c.settings.mapX; x++){
-            c.world.map.grid[y][x].containsUnit = false;
+            c.world.map.grid[y][x].containsUnit = [];
         }
     }
 	//then assign all non-hidden units
@@ -361,7 +366,7 @@ function setContainsUnit(){
 		for (var unit in c.world.civilisations[civilisation].units){
 			var thisUnit = c.world.civilisations[civilisation].units[unit];
 			if (!thisUnit.hidden){
-				c.world.map.grid[thisUnit.location.y][thisUnit.location.x].containsUnit = thisUnit;
+				c.world.map.grid[thisUnit.location.y][thisUnit.location.x].containsUnit.push(thisUnit);
 			}
 		}
 	}
