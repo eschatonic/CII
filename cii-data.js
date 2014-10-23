@@ -55,7 +55,7 @@ function setParams(){
 	c.params.resources.metal = new Resource("Metal",false,240);
 	c.params.resources.gold = new Resource("Gold",false,270);
 	
-	c.params.terrain.ocean = new Terrain("Ocean", [0,0,255], 1, 0, 0, false, []);
+	c.params.terrain.ocean = new Terrain("Ocean", [0,0,255], 1, 0, 0, false, ["fishery"]);
 	c.params.terrain.ice = new Terrain("Ice", [30,144,255], 0, 0, 0, false, []);
 	c.params.terrain.desert = new Terrain("Desert", [255,255,0], 0, 0, 0, true, []);
 	c.params.terrain.savannah = new Terrain("Savannah", [154,205,50], 1, 0, 0, true, ["farm","mine"]);
@@ -90,12 +90,13 @@ function setParams(){
 	c.params.improvements.farm = new Improvement("Farm",{food:1});
 	c.params.improvements.lumberCamp = new Improvement("Lumber Camp",{wood:1});
 	c.params.improvements.mine = new Improvement("Mine",{stone:1});
+	c.params.improvements.fishery = new Improvement("Fishery",{food:1});
 	
 	c.params.unitTypes.settler = new UnitType("Settler",{food:10},c.params.arrays.land,["settle","disband"]);
 	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,["work","buildFarm","buildMine","buildLumberCamp","disband"]);
 	c.params.unitTypes.explorer = new UnitType("Explorer",{food:10},c.params.arrays.land,["disband"]);
 	c.params.unitTypes.soldier = new UnitType("Soldier",{food:10},c.params.arrays.land,["disband"]);
-	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload","disband"]);
+	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload","buildFishery","disband"]);
 	
 	c.params.actions.disband = new SelectedAction("Disband",false,false,function(){
 		disband(c.selected);
@@ -130,6 +131,11 @@ function setParams(){
 		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("lumberCamp") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("lumberCamp") > -1);
 	},false,function(){
 		createImprovement("lumberCamp",c.selected);
+	});
+	c.params.actions.buildFishery = new SelectedAction("Build Fishery",function(){
+		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("fishery") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("fishery") > -1 && c.selected.containsUnit.length < 1);
+	},false,function(){
+		createImprovement("fishery",c.selected);
 	});
 	c.params.actions.unload = new SelectedAction("Unload",function(){
 		return c.selected.containsUnit.length > 0;
