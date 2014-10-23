@@ -2,7 +2,7 @@
 //constructors, objects, and methods for manipulating the data structure
 
 var c = {
-	version:"0.0.4",
+	version:"0.0.5",
     //dynamic
 	interface:false,
     selected:false,
