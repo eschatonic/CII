@@ -99,7 +99,7 @@ function setParams(){
 	},c.params.arrays.land,["settle","disband"]);
 	c.params.unitTypes.worker = new UnitType("Worker",{
 		food:function(){
-			return 10;
+			return Math.floor(20 * Math.pow(1.1,countWorkers(c.selected.civilisation)));
 		}
 	},c.params.arrays.land,["work","buildFarm","buildMine","buildLumberCamp","disband"]);
 	c.params.unitTypes.explorer = new UnitType("Explorer",{

@@ -248,6 +248,21 @@ function countSettlers(civ){
 	}
 	return pop;
 }
+function countWorkers(civ){
+	var pop = 0;
+	pop += c.world.civilisations[civ].cities.length;
+	for (var unit in c.world.civilisations[civ].units){
+		if (c.world.civilisations[civ].units[unit].unitType = "worker") pop++
+	}
+	for (var y=0;y<c.settings.mapY;y++){
+		for (var x=0;x<c.settings.mapX;x++){
+			if (c.world.map.grid[y][x].owned == civ){
+				pop += c.world.map.grid[y][x].improvements.length;
+			}
+		}
+	}
+	return pop;
+}
 
 function purchase(civ,cost){
 	//first check affordability
