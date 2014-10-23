@@ -138,22 +138,22 @@ function setParams(){
 		workLand(c.selected);
 	});
 	c.params.actions.buildFarm = new SelectedAction("Build Farm",function(){
-		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("farm") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("farm") > -1);
+		return canBuild("farm");
 	},false,function(){
 		createImprovement("farm",c.selected);
 	});
 	c.params.actions.buildMine = new SelectedAction("Build Mine",function(){
-		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("mine") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("mine") > -1);
+		return canBuild("mine");
 	},false,function(){
 		createImprovement("mine",c.selected);
 	});
 	c.params.actions.buildLumberCamp = new SelectedAction("Build Lumber Camp",function(){
-		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("lumberCamp") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("lumberCamp") > -1);
+		return canBuild("lumberCamp");
 	},false,function(){
 		createImprovement("lumberCamp",c.selected);
 	});
 	c.params.actions.buildFishery = new SelectedAction("Build Fishery",function(){
-		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements.indexOf("fishery") == -1 && c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].improvements.indexOf("fishery") > -1 && c.selected.containsUnit.length < 1);
+		return canBuild("fishery");
 	},false,function(){
 		createImprovement("fishery",c.selected);
 	});

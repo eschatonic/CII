@@ -235,6 +235,10 @@ function createImprovement(improvement,worker){
 	c.world.civilisations[worker.civilisation].units.splice(c.world.civilisations[worker.civilisation].units.indexOf(worker),1);
 	select(false);
 }
+function canBuild(improvement){
+	var square = c.world.map.grid[c.selected.location.y][c.selected.location.x];
+	return (square.owned == c.selected.civilisation && square.improvements.indexOf(improvement) == -1 && c.params.terrain[square.terrain].improvements.indexOf(improvement) > -1);
+}
 
 function countSettlers(civ){
 	var pop = 0;
