@@ -91,12 +91,15 @@ function setParams(){
 	c.params.improvements.lumberCamp = new Improvement("Lumber Camp",{wood:1});
 	c.params.improvements.mine = new Improvement("Mine",{stone:1});
 	
-	c.params.unitTypes.settler = new UnitType("Settler",{food:10},c.params.arrays.land,["settle"]);
-	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,["work","buildFarm","buildMine","buildLumberCamp"]);
-	c.params.unitTypes.explorer = new UnitType("Explorer",{food:10},c.params.arrays.land,[]);
-	c.params.unitTypes.soldier = new UnitType("Soldier",{food:10},c.params.arrays.land,[]);
-	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload"]);
+	c.params.unitTypes.settler = new UnitType("Settler",{food:10},c.params.arrays.land,["settle","disband"]);
+	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,["work","buildFarm","buildMine","buildLumberCamp","disband"]);
+	c.params.unitTypes.explorer = new UnitType("Explorer",{food:10},c.params.arrays.land,["disband"]);
+	c.params.unitTypes.soldier = new UnitType("Soldier",{food:10},c.params.arrays.land,["disband"]);
+	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload","disband"]);
 	
+	c.params.actions.disband = new SelectedAction("Disband",false,false,function(){
+		disband(c.selected);
+	});
 	c.params.actions.settle = new SelectedAction("Found City",false,false,function(){
         if (c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].foundable){
             if (!c.world.map.grid[c.selected.location.y][c.selected.location.x].containsCity){

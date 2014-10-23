@@ -138,6 +138,11 @@ function createUnitForCiv(civIndex,unitType,locY,locX){
 		select(unit);
 	}
 }
+function disband(unit){
+	if (unit == c.selected) select(false);
+	c.world.map.grid[unit.location.y][unit.location.x].containsUnit.splice(c.world.map.grid[unit.location.y][unit.location.x].containsUnit.indexOf(unit),1);
+	c.world.civilisations[unit.civilisation].units.splice(c.world.civilisations[unit.civilisation].units.indexOf(unit),1);
+}
 function moveUnit(unit,dy,dx,keepCurrent){	
 	function canMoveTo(unit,dy,dx){
 		for (var terrain in c.params.unitTypes[unit.unitType].traverse){
