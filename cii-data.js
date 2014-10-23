@@ -44,16 +44,22 @@ var c = {
 };
 
 function setParams(){
-	c.params.resources.food = new Resource("Food",true,0);
-	c.params.resources.wood = new Resource("Wood",true,30);
-	c.params.resources.stone = new Resource("Stone",true,60);
-	c.params.resources.skins = new Resource("Skins",false,90);
-	c.params.resources.herbs = new Resource("Herbs",false,120);
-	c.params.resources.ore = new Resource("Ore",false,150);
-	c.params.resources.leather = new Resource("Leather",false,180);
-	c.params.resources.piety = new Resource("Piety",false,210);
-	c.params.resources.metal = new Resource("Metal",false,240);
-	c.params.resources.gold = new Resource("Gold",false,270);
+	c.params.resources.food = new Resource("Food",true,"skins",function(amount){
+		return Math.round(amount * Math.random() * Math.random());
+	});
+	c.params.resources.wood = new Resource("Wood",true,"herbs",function(amount){
+		return Math.round(amount * Math.random() * Math.random());
+	});
+	c.params.resources.stone = new Resource("Stone",true,"ore",function(amount){
+		return Math.round(amount * Math.random() * Math.random());
+	});
+	c.params.resources.skins = new Resource("Skins",false,false,false);
+	c.params.resources.herbs = new Resource("Herbs",false,false,false);
+	c.params.resources.ore = new Resource("Ore",false,false,false);
+	c.params.resources.leather = new Resource("Leather",false,false,false);
+	c.params.resources.piety = new Resource("Piety",false,false,false);
+	c.params.resources.metal = new Resource("Metal",false,false,false);
+	c.params.resources.gold = new Resource("Gold",false,false,false);
 	
 	c.params.terrain.ocean = new Terrain("Ocean", [0,0,255], 1, 0, 0, false, ["fishery"]);
 	c.params.terrain.ice = new Terrain("Ice", [30,144,255], 0, 0, 0, false, []);
@@ -200,11 +206,13 @@ function setParams(){
 }
 
 //Constructors
-function Resource(en,active,xOffset){
+function Resource(en,active,secondary,secondaryChance){
 	this.name = {
 		en:en
 	};
 	this.active = active;
+	this.secondary = secondary;
+	this.secondaryChance = secondaryChance;
 }
 function Terrain(en,color,pfood,pwood,pstone,foundable,improvements){
 	this.name = {

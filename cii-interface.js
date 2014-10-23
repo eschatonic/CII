@@ -270,7 +270,7 @@ function mouseClicked(evt){
 					select(false);
 					if (c.world.map.grid[squareY][squareX].explored){
 						for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
-							c.world.civilisations[0].resources[resource] += c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource];
+							produceResourcesFor(resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],0);
 						}
 					}
 					//explore(squareY,squareX);

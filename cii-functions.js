@@ -240,6 +240,15 @@ function canBuild(improvement){
 	return (square.owned == c.selected.civilisation && square.improvements.indexOf(improvement) == -1 && c.params.terrain[square.terrain].improvements.indexOf(improvement) > -1);
 }
 
+function produceResourcesFor(resource,amount,civ){
+	c.world.civilisations[civ].resources[resource] += amount;
+	var secondary = c.params.resources[resource].secondary;
+	if (secondary && amount > 0){
+		produceResourcesFor(secondary,c.params.resources[resource].secondaryChance(amount),civ);
+		if (!c.params.resources[secondary].active && c.world.civilisations[civ].resources[secondary] > 0) c.params.resources[secondary].active = true;
+	}
+}
+
 function countSettlers(civ){
 	var pop = 0;
 	pop += c.world.civilisations[civ].cities.length;
