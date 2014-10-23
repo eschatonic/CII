@@ -319,6 +319,8 @@ function mouseWheel(evt){
 	var offsetY = squareY - (height/2);
 	if (offsetX < 0) offsetX = 0;
 	if (offsetY < 0) offsetY = 0;
+	if (offsetX > c.settings.mapX - width) offsetX = c.settings.mapX - width;
+	if (offsetY > c.settings.mapY - height) offsetY = c.settings.mapY - height;
 	
 	c.interface.settings.gridFocusY = Math.floor(offsetY);
 	c.interface.settings.gridFocusX = Math.floor(offsetX);
