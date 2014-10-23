@@ -348,7 +348,7 @@ function loadGame(loadType){
 		
 		randomSeed(c.player.seed);
         noiseSeed(c.player.seed);
-		setContainsUnit();
+		setContains();
 		versionCheck();
 	} else {
 		player = JSON.parse(localStorage.getItem("player"));
@@ -362,12 +362,13 @@ function loadGame(loadType){
 		
 	return (player && settings && world);
 }
-function setContainsUnit(){
+function setContains(){
 	//map
 	//first clear all
 	for (var y=0; y<c.settings.mapY; y++){
         for (var x=0; x<c.settings.mapX; x++){
             c.world.map.grid[y][x].containsUnit = [];
+			c.world.map.grid[y][x].containsCity = false;
         }
     }
 	//then assign all units
@@ -381,6 +382,10 @@ function setContainsUnit(){
 				//unit must be contained
 				if (thisUnit.container > -1) c.world.civilisations[civilisation].units[thisUnit.container].containsUnit.push(thisUnit);
 			}
+		}
+		for (var city in c.world.civilisations[civilisation].cities){
+			var thisCity = c.world.civilisations[civilisation].cities[city];
+			c.world.map.grid[thisCity.location.y][thisCity.location.x].containsCity = thisCity;
 		}
 	}
 }

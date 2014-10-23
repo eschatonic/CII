@@ -22,7 +22,7 @@ function setup(){
 		Toast.info("Loaded saved game")
         randomSeed(c.player.seed);
         noiseSeed(c.player.seed);
-		setContainsUnit();
+		setContains();
 		versionCheck();
     }
 	

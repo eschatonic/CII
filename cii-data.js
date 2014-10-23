@@ -100,18 +100,16 @@ function setParams(){
 	c.params.actions.disband = new SelectedAction("Disband",false,false,function(){
 		disband(c.selected);
 	});
-	c.params.actions.settle = new SelectedAction("Found City",false,false,function(){
-        if (c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].foundable){
-            if (!c.world.map.grid[c.selected.location.y][c.selected.location.x].containsCity){
-                var name = prompt("Name your city");
-                if (name){
-					var city = new City(c.selected.civilisation);
-                    c.world.civilisations[c.selected.civilisation].cities.push(city);
-                    foundCity(c.world.civilisations[c.selected.civilisation],city,name,c.selected,c.selected.location.y,c.selected.location.x);
-                    select(city);
-                }
-            }
-        }
+	c.params.actions.settle = new SelectedAction("Found City",function(){
+		return (c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].foundable && !c.world.map.grid[c.selected.location.y][c.selected.location.x].containsCity);
+	},false,function(){
+		var name = prompt("Name your city");
+		if (name){
+			var city = new City(c.selected.civilisation);
+			c.world.civilisations[c.selected.civilisation].cities.push(city);
+			foundCity(c.world.civilisations[c.selected.civilisation],city,name,c.selected,c.selected.location.y,c.selected.location.x);
+			select(city);
+		}
 	});
 	c.params.actions.work = new SelectedAction("Work Land",function(){
 		return (c.world.map.grid[c.selected.location.y][c.selected.location.x].owned == c.selected.civilisation && !c.world.map.grid[c.selected.location.y][c.selected.location.x].worked);
