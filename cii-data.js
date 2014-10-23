@@ -296,6 +296,7 @@ function Unit(civ,unitType,y,x){
 	    x:x
 	};
 	this.interfaceActions = c.params.unitTypes[unitType].actions;
+	this.container = -1;
 	this.containsUnit = [];
 	
 	c.world.map.grid[y][x].containsUnit.push(this);

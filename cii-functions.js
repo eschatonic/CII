@@ -189,12 +189,14 @@ function moveUnit(unit,dy,dx,keepCurrent){
 					c.world.map.grid[fromY][fromX].containsUnit[containerUnit].containsUnit.splice(c.world.map.grid[fromY][fromX].containsUnit[containerUnit].containsUnit.indexOf(unit),1)
 				}
 			}
+			unit.container = -1;
 			unit.hidden = false;
 		}
 	} else {
 		var load = canLoadTo(unit,dy,dx); //value used later if truthy
 		if (load) {
 			unit.hidden = true;
+			unit.container = c.world.civilisations[unit.civilisation].units.indexOf(load);
 			c.world.map.grid[unit.location.y][unit.location.x].containsUnit.splice(c.world.map.grid[unit.location.y][unit.location.x].containsUnit.indexOf(unit),1);
 			load.containsUnit.push(unit);
 			select(load);
@@ -361,18 +363,23 @@ function loadGame(loadType){
 	return (player && settings && world);
 }
 function setContainsUnit(){
+	//map
 	//first clear all
 	for (var y=0; y<c.settings.mapY; y++){
         for (var x=0; x<c.settings.mapX; x++){
             c.world.map.grid[y][x].containsUnit = [];
         }
     }
-	//then assign all non-hidden units
+	//then assign all units
 	for (var civilisation in c.world.civilisations){
 		for (var unit in c.world.civilisations[civilisation].units){
 			var thisUnit = c.world.civilisations[civilisation].units[unit];
+			thisUnit.containsUnit = []; //clear contained units
 			if (!thisUnit.hidden){
 				c.world.map.grid[thisUnit.location.y][thisUnit.location.x].containsUnit.push(thisUnit);
+			} else {
+				//unit must be contained
+				if (thisUnit.container > -1) c.world.civilisations[civilisation].units[thisUnit.container].containsUnit.push(thisUnit);
 			}
 		}
 	}
