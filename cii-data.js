@@ -92,11 +92,31 @@ function setParams(){
 	c.params.improvements.mine = new Improvement("Mine",{stone:1});
 	c.params.improvements.fishery = new Improvement("Fishery",{food:1});
 	
-	c.params.unitTypes.settler = new UnitType("Settler",{food:10},c.params.arrays.land,["settle","disband"]);
-	c.params.unitTypes.worker = new UnitType("Worker",{food:10},c.params.arrays.land,["work","buildFarm","buildMine","buildLumberCamp","disband"]);
-	c.params.unitTypes.explorer = new UnitType("Explorer",{food:10},c.params.arrays.land,["disband"]);
-	c.params.unitTypes.soldier = new UnitType("Soldier",{food:10},c.params.arrays.land,["disband"]);
-	c.params.unitTypes.boat = new UnitType("Boat",{food:10},["ocean"],["unload","buildFishery","disband"]);
+	c.params.unitTypes.settler = new UnitType("Settler",{
+		food:function(){
+			return Math.floor(56 * Math.pow(1.8,countSettlers(c.selected.civilisation)));
+		}
+	},c.params.arrays.land,["settle","disband"]);
+	c.params.unitTypes.worker = new UnitType("Worker",{
+		food:function(){
+			return 10;
+		}
+	},c.params.arrays.land,["work","buildFarm","buildMine","buildLumberCamp","disband"]);
+	c.params.unitTypes.explorer = new UnitType("Explorer",{
+		food:function(){
+			return 10;
+		}
+	},c.params.arrays.land,["disband"]);
+	c.params.unitTypes.soldier = new UnitType("Soldier",{
+		food:function(){
+			return 10;
+		}
+	},c.params.arrays.land,["disband"]);
+	c.params.unitTypes.boat = new UnitType("Boat",{
+		food:function(){
+			return 10;
+		}
+	},["ocean"],["unload","buildFishery","disband"]);
 	
 	c.params.actions.disband = new SelectedAction("Disband",false,false,function(){
 		disband(c.selected);

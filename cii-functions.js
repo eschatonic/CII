@@ -236,14 +236,23 @@ function createImprovement(improvement,worker){
 	select(false);
 }
 
+function countSettlers(civ){
+	var pop = 0;
+	pop += c.world.civilisations[civ].cities.length;
+	for (var unit in c.world.civilisations[civ].units){
+		if (c.world.civilisations[civ].units[unit].unitType = "settler") pop++
+	}
+	return pop;
+}
+
 function purchase(civ,cost){
 	//first check affordability
 	for (var resource in cost){
-		if (c.world.civilisations[civ].resources[resource] < cost[resource]) return false;
+		if (c.world.civilisations[civ].resources[resource] < cost[resource]()) return false;
 	}
 	//then pay
 	for (var resource in cost){
-		c.world.civilisations[civ].resources[resource] -= cost[resource];
+		c.world.civilisations[civ].resources[resource] -= cost[resource]();
 	}
 	return true;
 }
@@ -288,7 +297,7 @@ function costToString(cost){
 			if (!output == "") output += ", ";
 			output += c.params.resources[resource].name.en;
 			output += ": ";
-			output += cost[resource];
+			output += cost[resource]();
 		}
 		return output;
 	}
