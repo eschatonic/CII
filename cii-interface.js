@@ -110,7 +110,7 @@ function Interface(){
 					selectedStr += "<div>&lt;" + c.params.improvements[c.world.map.grid[c.selected.location.y][c.selected.location.x].improvements[improvement]].name.en + "&gt;</div>"
 				}
                 selectedStr += "<div class='actions'>";
-                for (var i=0,j=c.selected.interfaceActions.length; i<j; i++){
+				for (var i=0,j=c.selected.interfaceActions.length; i<j; i++){
 					if (c.params.actions[c.selected.interfaceActions[i]].condition === false || c.params.actions[c.selected.interfaceActions[i]].condition()){
 						selectedStr += "<div class='action'>";
 						selectedStr += "<button id='selected" + i + "'>" + c.params.actions[c.selected.interfaceActions[i]].name + "</button>";
@@ -119,7 +119,7 @@ function Interface(){
 						}
 						selectedStr += "</div>";
 					}
-                }
+				}
                 selectedStr += "</div>";
             } else {
                 selectedStr += "<div>No selection</div>";
