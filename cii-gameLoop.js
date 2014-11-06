@@ -64,47 +64,31 @@ function tick(){
         saveGame("auto");
         c.timers.autoSave = 0;
     }
-	//tile improvements
-	/*
-	for (var i=0; i<c.settings.mapY; i++){
-		for (var j=0; j<c.settings.mapX; j++){
-			if (c.world.map.grid[i][j].owned){
-				if (c.world.map.grid[i][j].improvements.length > 0){
-					for (var improvement in c.world.map.grid[i][j].improvements){
-						for (var resource in c.world.map.grid[i][j].improvements[improvement].bonus){
-							if (true){ //c.world.civilisations[c.world.map.grid[i][j].owned].tech.farming){
-								produceResourcesFor(c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],c.world.map.grid[i][j].owned);
-							} else {
-								c.world.civilisations[c.world.map.grid[i][j].owned].resources[resource] += c.world.map.grid[i][j].improvements[improvement].bonus[resource];
-							}
-						}
-					}
-				}
-			}
-		}
-	}*/
 	for (var i=0;i<c.settings.mapY;i++){
 		for (var j=0;j<c.settings.mapX;j++){
 			var square = c.world.map.grid[i][j]
-			//workers can work tiles (autoclick)
-			if (square.worked){
-				for (var resource in c.params.terrain[square.terrain].production){
-					c.world.civilisations[square.owned].resources[resource] += c.params.terrain[square.terrain].production[resource];
-				}
-			}
-			//workers can create improvements
-			if (square.improvements.length > 0){
-				if (square.owned > -1){
-					for (var improvement in square.improvements){					
-						for (var resource in c.params.resources){
-							if (c.params.improvements[square.improvements[improvement]].bonus.hasOwnProperty(resource)){
-								produceResourcesFor(c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],false/*c.world.civilisations[c.world.map.grid[i][j].owned].tech["secondary"+resource]*/,c.world.map.grid[i][j].owned);
+			if (square.owned > -1){
+				//workers can work tiles (autoclick)
+				if (square.worked){
+					//first produce the tile's base resources
+					for (var resource in c.params.terrain[square.terrain].production){
+						//c.world.civilisations[square.owned].resources[resource] += c.params.terrain[square.terrain].production[resource];
+						
+						produceResourcesFor(c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],true/*c.world.civilisations[c.world.map.grid[i][j].owned].tech["secondary"+resource]*/,c.world.map.grid[i][j].owned);
+					}
+					//then produce for the tile's improvements
+					if (square.improvements.length > 0){
+						for (var improvement in square.improvements){					
+							for (var resource in c.params.resources){
+								if (c.params.improvements[square.improvements[improvement]].bonus.hasOwnProperty(resource)){
+									produceResourcesFor(c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],true/*c.world.civilisations[c.world.map.grid[i][j].owned].tech["secondary"+resource]*/,c.world.map.grid[i][j].owned);
+								}
 							}
 						}
 					}
 				}
 			}
-			//cities slowly generate their own food
+			//cities slowly generate their own food for balance reasons. This should probably be changed at some point.
 			if (square.containsCity) c.world.civilisations[square.owned].resources.food += 1;
 		}
 	}

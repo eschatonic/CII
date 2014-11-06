@@ -226,6 +226,7 @@ function explore(fromY,fromX){
 
 function workLand(worker){
 	c.world.map.grid[worker.location.y][worker.location.x].worked = true;
+	//worker.hidden = true;
 	c.world.civilisations[worker.civilisation].units.splice(c.world.civilisations[worker.civilisation].units.indexOf(worker),1);
 	select(false);
 }
