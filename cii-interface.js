@@ -56,6 +56,10 @@ function Interface(){
     clearfix.className = "clearfix";
     document.body.appendChild(clearfix);
     
+	for (var resource in c.params.resources){
+		if (!c.params.resources[resource].active && c.world.civilisations[0].resources[resource] > 0) c.params.resources[resource].active = true;
+	}
+	
     this.update = function(updateSelected){
         
         //resources
@@ -270,10 +274,9 @@ function mouseClicked(evt){
 					select(false);
 					if (c.world.map.grid[squareY][squareX].explored){
 						for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
-							produceResourcesFor(resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],0);
+							produceResourcesFor(c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
 						}
 					}
-					//explore(squareY,squareX);
 				}
 			}
 		}

@@ -240,12 +240,14 @@ function canBuild(improvement){
 	return (square.owned == c.selected.civilisation && square.improvements.indexOf(improvement) == -1 && c.params.terrain[square.terrain].improvements.indexOf(improvement) > -1);
 }
 
-function produceResourcesFor(resource,amount,civ){
+function produceResourcesFor(tile,resource,amount,produceSecondary,civ){
 	c.world.civilisations[civ].resources[resource] += amount;
-	var secondary = c.params.resources[resource].secondary;
-	if (secondary && amount > 0){
-		produceResourcesFor(secondary,c.params.resources[resource].secondaryChance(amount),civ);
-		if (!c.params.resources[secondary].active && c.world.civilisations[civ].resources[secondary] > 0) c.params.resources[secondary].active = true;
+	if (produceSecondary){
+		var secondary = c.params.resources[resource].secondary;
+		if (secondary && amount > 0 && tile != "ocean"){
+			produceResourcesFor(tile,secondary,c.params.resources[resource].secondaryChance(amount),false,civ);
+			if (!c.params.resources[secondary].active && c.world.civilisations[civ].resources[secondary] > 0) c.params.resources[secondary].active = true;
+		}
 	}
 }
 
