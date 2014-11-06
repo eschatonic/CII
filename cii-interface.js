@@ -200,19 +200,28 @@ function drawCity(city,color){
 			city.name,
 			((c.settings.squareSize) * (x + 0.5 - c.interface.settings.gridFocusX)) * c.interface.settings.zoomLevel,
 			((c.settings.squareSize) * (y - 0.3 - c.interface.settings.gridFocusY)) * c.interface.settings.zoomLevel
-		)
+		);
+		if (city == c.selected && c.blink){
+			stroke(255,255,0);
+		}
 		rect(
 			(x-c.interface.settings.gridFocusX)*c.settings.squareSize*c.interface.settings.zoomLevel,
 			(y-c.interface.settings.gridFocusY)*c.settings.squareSize*c.interface.settings.zoomLevel,
 			c.settings.squareSize * c.interface.settings.zoomLevel,
 			c.settings.squareSize * c.interface.settings.zoomLevel
 		);
+		stroke(0);
 		textAlign("left");
 		textStyle(NORMAL);
 	}
 }
 function drawUnit(unit,color){
 	if (!unit.hidden) {
+		if (unit == c.selected && c.blink){
+			stroke(255,255,0);
+		} else {
+			stroke(0);
+		};
 		fill(color.red,color.green,color.blue);
 		ellipse(
 			(unit.location.x-c.interface.settings.gridFocusX)*c.settings.squareSize*c.interface.settings.zoomLevel + c.settings.squareSize*c.interface.settings.zoomLevel/2,

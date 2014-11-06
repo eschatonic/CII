@@ -333,6 +333,11 @@ function costToString(cost){
 	}
 }
 
+function updateBlink(time){
+	var BPM = (1000*60/125)
+	c.blink = Math.floor(time/BPM) % 2;
+}
+
 //Debug
 function revealAll(){
     for (var y=0; y<c.settings.mapY; y++){

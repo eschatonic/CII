@@ -43,6 +43,7 @@ function setup(){
 //interface drawing
 function draw(){
     background(0); //clear
+	updateBlink(new Date().getTime());
     drawMap(c.world.map);
 	for (var civilisation in c.world.civilisations){
 		drawCivilisation(c.world.civilisations[civilisation]);
