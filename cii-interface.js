@@ -51,6 +51,7 @@ function Interface(){
 		gridFocusX:0,
 		gridFocusY:0
 	};
+	this.particles = [];
 	
     var clearfix = document.createElement("div");
     clearfix.className = "clearfix";
@@ -132,6 +133,34 @@ function Interface(){
             }
         }
     };
+}
+
+function Particle(img,y,x,life){
+	this.img = loadImage(img);
+	this.y = y;
+	this.x = x;
+	this.lifetime = life;
+	this.life = Math.random() * life;
+	this.uid = Math.random();
+
+	this.move = function(){
+		this.life -= c.interface.particles.length;
+		if (this.life < 0){
+			c.interface.particles.splice(c.interface.particles.indexOf(this),1);
+			return false;
+		}
+		this.y -= this.uid * 2;
+		this.x += this.uid - 0.5;
+	}
+	this.draw = function(){
+		imageMode(CENTER)
+		if (this.life < this.lifetime / 2){
+			tint(255,this.life/this.lifetime * 2 * 255);
+		} else {
+			tint(255,255);
+		}
+		image(this.img,this.x,this.y,18,18);
+	}
 }
 
 //drawing
@@ -231,6 +260,12 @@ function drawUnit(unit,color){
 		);
 	}
 }
+function drawParticles(){
+	for (var particle in c.interface.particles){
+		c.interface.particles[particle].move();
+		c.interface.particles[particle].draw();
+	}
+}
 
 //Input
 function checkInput(){
@@ -284,7 +319,9 @@ function mouseClicked(evt){
 					if (c.world.map.grid[squareY][squareX].explored){
 						for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
 							produceResourcesFor(c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
+							if (c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource] > 0) c.interface.particles.push(new Particle(c.params.resources[resource].url,mouseY,mouseX,120));
 						}
+						
 					}
 				}
 			}
@@ -345,5 +382,5 @@ function focus(squareY,squareX){
 function select(obj){
     c.selected = obj;
     if (c.interface) c.interface.update(true);
-	if (obj) focus(c.selected.location.y,c.selected.location.x);
+	if (obj && c.interface) focus(c.selected.location.y,c.selected.location.x);
 }

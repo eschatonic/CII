@@ -44,22 +44,22 @@ var c = {
 };
 
 function setParams(){
-	c.params.resources.food = new Resource("Food",true,"skins",function(amount){
+	c.params.resources.food = new Resource("Food","http://dhmholley.co.uk/cii/icons/food.png",true,"skins",function(amount){
 		return Math.round(amount * Math.random() * Math.random());
 	});
-	c.params.resources.wood = new Resource("Wood",true,"herbs",function(amount){
+	c.params.resources.wood = new Resource("Wood","http://dhmholley.co.uk/cii/icons/wood.png",true,"herbs",function(amount){
 		return Math.round(amount * Math.random() * Math.random());
 	});
-	c.params.resources.stone = new Resource("Stone",true,"ore",function(amount){
+	c.params.resources.stone = new Resource("Stone","http://dhmholley.co.uk/cii/icons/stone.png",true,"ore",function(amount){
 		return Math.round(amount * Math.random() * Math.random());
 	});
-	c.params.resources.skins = new Resource("Skins",false,false,false);
-	c.params.resources.herbs = new Resource("Herbs",false,false,false);
-	c.params.resources.ore = new Resource("Ore",false,false,false);
-	c.params.resources.leather = new Resource("Leather",false,false,false);
-	c.params.resources.piety = new Resource("Piety",false,false,false);
-	c.params.resources.metal = new Resource("Metal",false,false,false);
-	c.params.resources.gold = new Resource("Gold",false,false,false);
+	c.params.resources.skins = new Resource("Skins","http://dhmholley.co.uk/cii/icons/skins.png",false,false,false);
+	c.params.resources.herbs = new Resource("Herbs","http://dhmholley.co.uk/cii/icons/herbs.png",false,false,false);
+	c.params.resources.ore = new Resource("Ore","http://dhmholley.co.uk/cii/icons/ore.png",false,false,false);
+	c.params.resources.leather = new Resource("Leather","http://dhmholley.co.uk/cii/icons/leather.png",false,false,false);
+	c.params.resources.piety = new Resource("Piety","http://dhmholley.co.uk/cii/icons/piety.png",false,false,false);
+	c.params.resources.metal = new Resource("Metal","http://dhmholley.co.uk/cii/icons/metal.png",false,false,false);
+	c.params.resources.gold = new Resource("Gold","http://dhmholley.co.uk/cii/icons/gold.png",false,false,false);
 	
 	c.params.terrain.ocean = new Terrain("Ocean", [0,0,255], 1, 0, 0, false, ["fishery"]);
 	c.params.terrain.ice = new Terrain("Ice", [30,144,255], 0, 0, 0, false, []);
@@ -206,10 +206,11 @@ function setParams(){
 }
 
 //Constructors
-function Resource(en,active,secondary,secondaryChance){
+function Resource(en,url,active,secondary,secondaryChance){
 	this.name = {
 		en:en
 	};
+	this.url = url;
 	this.active = active;
 	this.secondary = secondary;
 	this.secondaryChance = secondaryChance;

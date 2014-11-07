@@ -48,6 +48,7 @@ function draw(){
 	for (var civilisation in c.world.civilisations){
 		drawCivilisation(c.world.civilisations[civilisation]);
 	}
+	drawParticles();
     c.interface.update(false);
     checkInput();
     var d = new Date().getTime();
