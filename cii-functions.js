@@ -202,6 +202,7 @@ function moveUnit(unit,dy,dx,keepCurrent){
 			select(load);
 		}
 	}
+	focus(c.selected.location.y,c.selected.location.x);
 }
 function explore(fromY,fromX){
     for (var toY = fromY-1; toY<=fromY+1; toY++){

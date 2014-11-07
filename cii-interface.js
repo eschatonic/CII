@@ -325,6 +325,10 @@ function mouseWheel(evt){
 		}
 	}
 	
+	focus(squareY,squareX);
+}
+
+function focus(squareY,squareX){
 	var width = c.settings.mapX / c.interface.settings.zoomLevel;
 	var height = c.settings.mapY / c.interface.settings.zoomLevel;
 	var offsetX = squareX - (width/2);
@@ -341,4 +345,5 @@ function mouseWheel(evt){
 function select(obj){
     c.selected = obj;
     if (c.interface) c.interface.update(true);
+	if (obj) focus(c.selected.location.y,c.selected.location.x);
 }
