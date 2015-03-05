@@ -189,6 +189,8 @@ function setParams(){
 	c.params.actions.expandBorders = new SelectedAction("Expand Borders",false,function(){
 		return "Food: " + prettify(Math.pow(100,c.selected.borders));
 	},function(){
+	   //if (sumResource(c.selected.civilisation, "food") >= Math.pow(100,c.selected.borders)){
+		   //spendResource(c.selected.civilisation, "food", Math.floor(Math.pow(100,c.selected.borders)))
 	   if (c.world.civilisations[c.selected.civilisation].resources.food >= Math.pow(100,c.selected.borders)){
 	       c.world.civilisations[c.selected.civilisation].resources.food -= Math.floor(Math.pow(100,c.selected.borders));
 	       c.selected.borders++;
@@ -282,9 +284,6 @@ function Civilisation(isPlayer,index){
 	this.resources = {
 	    gatherRate:1
 	};
-	for (var resource in c.params.resources){
-        this.resources[resource] = 0;
-	}
 	this.cities = [];
 	this.units = [];
 	this.techs = [];
@@ -304,6 +303,10 @@ function Tech(){
 }
 function City(civ){
 	this.civilisation = civ;
+	this.resources = {};
+	for (var resource in c.params.resources){
+        this.resources[resource] = 0;
+	}
 	this.interfaceActions = ["createSettler","createBoat","createWorker","expandBorders"];
 }
 

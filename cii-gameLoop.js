@@ -76,14 +76,14 @@ function tick(){
 					for (var resource in c.params.terrain[square.terrain].production){
 						//c.world.civilisations[square.owned].resources[resource] += c.params.terrain[square.terrain].production[resource];
 						
-						produceResourcesFor(c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],true/*c.world.civilisations[c.world.map.grid[i][j].owned].tech["secondary"+resource]*/,c.world.map.grid[i][j].owned);
+						produceResourcesFor([i,j],c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],true/*c.world.civilisations[c.world.map.grid[i][j].owned].tech["secondary"+resource]*/,c.world.map.grid[i][j].owned);
 					}
 					//then produce for the tile's improvements
 					if (square.improvements.length > 0){
 						for (var improvement in square.improvements){					
 							for (var resource in c.params.resources){
 								if (c.params.improvements[square.improvements[improvement]].bonus.hasOwnProperty(resource)){
-									produceResourcesFor(c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],true/*c.world.civilisations[c.world.map.grid[i][j].owned].tech["secondary"+resource]*/,c.world.map.grid[i][j].owned);
+									produceResourcesFor([i,j],c.world.map.grid[i][j].terrain,resource,c.params.terrain[c.world.map.grid[i][j].terrain].production[resource],true/*c.world.civilisations[c.world.map.grid[i][j].owned].tech["secondary"+resource]*/,c.world.map.grid[i][j].owned);
 								}
 							}
 						}

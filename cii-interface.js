@@ -33,7 +33,7 @@ function Interface(){
 	$('#impExp').append('<button class="export" onclick="saveGame(\'export\');">Export Save</button>');
 	$('#impExp').append('<button class="import" onclick="loadGame(\'import\');">Import Save</button>');
     
-	$('#pane-about').append("<h1>CivClicker II</h1><div>&copy;2014 dhmholley</div>");
+	$('#pane-about').append("<h1>CivClicker II</h1><div>&copy;2015 David Stark</div>");
 	$('#pane-about').append("<div>version " + c.version + "</div>");
 	$('#pane-about').append("<div>&nbsp;</div>");
 	$('#pane-about').append("<div><s><a href=''>Frequently Asked Questions</a></s></div>");
@@ -70,7 +70,8 @@ function Interface(){
 				strResources += "<tr class='resource'><td class='resource-name'>";
 				strResources += c.params.resources[resource].name.en;
 				strResources += ": </td><td class='resource-value'>"
-				strResources += prettify(c.world.civilisations[0].resources[resource]);
+				//strResources += prettify(c.world.civilisations[0].resources[resource]);
+				strResources += prettify(sumResource(0,resource));
 				strResources += "</td><td class='resource-icon'>";
 				strResources += "<span class='icon-" + resource + "'></span>"
 				strResources += "</td></tr>"
@@ -318,7 +319,7 @@ function mouseClicked(evt){
 					select(false);
 					if (c.world.map.grid[squareY][squareX].explored){
 						for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
-							produceResourcesFor(c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
+							produceResourcesFor([squareY,squareX],c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
 							if (c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource] > 0) c.interface.particles.push(new Particle(c.params.resources[resource].url,mouseY,mouseX,120));
 						}
 						

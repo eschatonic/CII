@@ -241,15 +241,27 @@ function canBuild(improvement){
 	return (square.owned == c.selected.civilisation && square.improvements.indexOf(improvement) == -1 && c.params.terrain[square.terrain].improvements.indexOf(improvement) > -1);
 }
 
-function produceResourcesFor(tile,resource,amount,produceSecondary,civ){
-	c.world.civilisations[civ].resources[resource] += amount;
+function produceResourcesFor(coords,tile,resource,amount,produceSecondary,civ){
+	//c.world.civilisations[civ].resources[resource] += amount;
+	var city;
+	if (c.selected && c.selected.unitType === "undefined" && c.selected.civilisation == civ){
+		city = c.selected;
+	} else {
+		city = getClosestCity(civ,coords);
+	}
+	if (city) city.resources[resource] += amount;
 	if (produceSecondary){
 		var secondary = c.params.resources[resource].secondary;
 		if (secondary && amount > 0 && tile != "ocean"){
-			produceResourcesFor(tile,secondary,c.params.resources[resource].secondaryChance(amount),false,civ);
+			produceResourcesFor(coords,tile,secondary,c.params.resources[resource].secondaryChance(amount),false,civ);
 			if (!c.params.resources[secondary].active && c.world.civilisations[civ].resources[secondary] > 0) c.params.resources[secondary].active = true;
 		}
 	}
+}
+
+function getClosestCity(civ,coords){
+	return c.world.civilisations[civ].cities[0];
+	//MAKE THIS ACTUALLY GET THE CLOSEST CITY LATER
 }
 
 function countSettlers(civ){
@@ -479,4 +491,25 @@ function runUpdates(playerVersion){
 	//run version updates here
 	//finally update version
 	c.version.player = c.version;
+}
+
+function sumResource(civ, resource){
+	var output = 0;
+	for (var city in c.world.civilisations[civ].cities){
+		if (c.world.civilisations[civ].cities[city].resources[resource]) output += c.world.civilisations[civ].cities[city].resources[resource];
+	}
+	return output;
+}
+function spendResource(civ, resource, amount){
+	var cityArray = [];
+	for (var city in c.world.civilisations[civ].cities){
+		cityArray.push([
+			c.world.civilisations[civ].cities[city],
+			c.world.civilisations[civ].cities[city].resources[resource]
+		]);
+	}
+	cityArray.sort(function(a,b){
+		return b[1] - a[1];
+	})
+	return cityArray;
 }
