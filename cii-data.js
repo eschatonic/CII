@@ -22,14 +22,18 @@ function initialDataSetup() {
 			squareSize: 10,
 			interfaceWidth: 300,
 			map: {
-				noiseOctaves:5,
-				noiseOctaveFalloff:0.55,
 				noiseScale: 0.32,
+				elevationOctaves:5,
+				elevationOctaveFalloff:0.55,
+				temperatureOctaves:5,
+				temperatureOctaveFalloff:0.55,
+				precipitationOctaves:2,
+				precipitationOctaveFalloff:0.65,
 				seaLevel: 0.6,
 				mountainHeight: 0.7,
 				tempNoise: 0.17,
 				precNoise: 0.5,
-				iceThreshold: 0.12
+				iceThreshold: 0.13
 			},
 			toastDuration: 1000,
 			tick: 1000,

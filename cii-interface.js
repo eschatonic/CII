@@ -163,14 +163,14 @@ function checkInput(){
 }
 
 function bindInterfaceEvents() {
-	$(document).on("mousemove", function (evt) {
+	$(document).off("mousemove").on("mousemove", function (evt) {
 		if (c.ui) {
 			c.ui.mouseX = event.pageX;
 			c.ui.mouseY = event.pageY;
 		}
 	});
 
-	$(document).on("click", function (evt) {
+	$(document).off("click").on("click", function (evt) {
 		if (evt.target.className === "tab") {
 			//change selected tab
 			$('.tab.tab-selected').removeClass('tab-selected');
@@ -185,7 +185,7 @@ function bindInterfaceEvents() {
 			}
 		}
 	});
-	$(document).on("keydown", function (evt) {
+	$(document).off("keydown").on("keydown", function (evt) {
 		if (evt.keyCode === UP_ARROW) {
 			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, -1, 0, c.selected.hidden);
 		} else if (evt.keyCode === DOWN_ARROW) {
@@ -199,8 +199,8 @@ function bindInterfaceEvents() {
 		c.ui.update(true);
 	});
 
-	document.addEventListener("DOMMouseScroll", mouseWheel, false); //firefox
-	document.addEventListener("mousewheel", mouseWheel, false); //firefox
+	$(document).off("DOMMouseScroll").on("DOMMouseScroll", mouseWheel); //firefox
+	$(document).off("mousewheel").on("mousewheel", mouseWheel); //chrome
 
 }
 function mouseWheel(evt){
