@@ -165,8 +165,8 @@ function checkInput(){
 function bindInterfaceEvents() {
 	$(document).off("mousemove").on("mousemove", function (evt) {
 		if (c.ui) {
-			c.ui.mouseX = event.pageX;
-			c.ui.mouseY = event.pageY;
+			c.ui.mouseX = evt.pageX;
+			c.ui.mouseY = evt.pageY;
 		}
 	});
 
