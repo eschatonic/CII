@@ -1,93 +1,4 @@
 //Functions
-
-function generateWorld(world){
-	world.date = 0;
-	
-	world.map = new Map();
-	generateMap(world.map);
-	
-	world.civilisations = [];
-}
-function generateMap(map){
-	for (var y=0;y<c.settings.mapY;y++){
-		map.grid[y] = [];
-		for (var x=0;x<c.settings.mapX;x++){
-			map.grid[y][x] = new MapSquare(y,x);
-			generateMapSquare(map,y,x);
-		}
-	}
-}
-function generateMapSquare(map,y,x){
-	var square = map.grid[y][x];
-	var scale = c.settings.mapX * c.settings.map.noiseScale;
-	
-	var elFirst = noise(y/scale,x/scale),
-		elSecond = noise(y/scale,(c.settings.mapX+x)/scale),
-		xProp = x/c.settings.mapX;
-	square.elevation = (elFirst * (xProp)) + (elSecond * (1 - xProp));
-	
-	var tempNoise = noise((y+1000)/(scale/2),(x+1000)/(scale/2)),
-		tempCurve = Math.cos(y / c.settings.mapY * 2 * Math.PI) * -1,
-		tempNorm = (tempCurve + 1)/2;
-	square.temperature = (tempNoise * c.settings.map.tempNoise) + (tempNorm * (1 - c.settings.map.tempNoise));
-	
-	var precNoise = noise((y+1000)/(scale/3),(x+1000)/(scale/3)),
-		precCurve = Math.cos(y / c.settings.mapY * 4 * Math.PI),
-		precNorm = (precCurve + 1)/2;
-	square.precipitation = (precNoise * c.settings.map.precNoise) + (precNorm * (1 - c.settings.map.precNoise));
-	
-	if (square.elevation < c.settings.map.seaLevel){
-		//sea
-		if (square.temperature > c.settings.map.iceThreshold){
-			square.terrain = "ocean";
-		} else {
-			square.terrain = "ice"
-		}
-	} else if (square.elevation < c.settings.map.mountainHeight) {
-		//lowlands
-		if (square.temperature < 0.2){
-			square.terrain = "tundra";
-		} else {
-			//mark as potential starting location
-			c.world.map.startingLocs.push([y,x]);
-			if (square.precipitation < 0.3){
-				if (square.temperature - square.precipitation < 0.3){
-					square.terrain = "grassland";
-				} else {
-					square.terrain = "desert";
-				}
-			} else {
-				if (square.temperature < 0.5){
-					square.terrain = "taiga";
-				} else if (square.temperature < 0.75){
-					if (square.precipitation < 0.5){
-						square.terrain = "woods";
-					} else if (square.precipitation < 0.7) {
-						square.terrain = "forest";
-					} else {
-						square.terrain = "swamp";
-					}
-				} else {
-					if (square.precipitation < 0.5){
-						square.terrain = "savannah";
-					} else if (square.precipitation < 0.7){
-						square.terrain = "forest";
-					} else {
-						square.terrain = "rainforest";
-					}
-				}
-			}
-		}
-	} else {
-		//high elevation
-		if (square.elevation < c.settings.map.mountainHeight + 0.05){
-			square.terrain = "mountains";
-		} else {
-			square.terrain = "snowpeaks";
-		}
-	}
-}
-
 function getTargetY(y){
 	var output = y;
 	if (output < 0) output = 0;
@@ -108,7 +19,7 @@ function foundCity(civ,city,name,settler){
 	city.location = {
 		y:settler.location.y,
 		x:settler.location.x
-	}
+	};
 	city.borders = 1;
 	city.production = [];
 	city.buildings = [];
@@ -133,7 +44,7 @@ function foundCity(civ,city,name,settler){
 
 function createUnitForCiv(civIndex,unitType,locY,locX){
 	if (purchase(civIndex,c.params.unitTypes[unitType].cost)){
-		var unit = new Unit(civIndex,unitType,locY,locX)
+		var unit = new Unit(civIndex,unitType,locY,locX);
 		c.world.civilisations[civIndex].units.push(unit);
 		select(unit);
 	}
@@ -158,9 +69,9 @@ function moveUnit(unit,dy,dx,keepCurrent){
 		if (targetX < 0) targetX += c.settings.mapX;
 		if (targetX >= c.settings.mapX) targetX -= c.settings.mapX;
 		if (c.world.map.grid[targetY][targetX].containsUnit.length > 0){
-			for (var unit in c.world.map.grid[targetY][targetX].containsUnit){
-				if (c.world.map.grid[targetY][targetX].containsUnit[unit].interfaceActions.indexOf("unload") > -1 && c.world.map.grid[targetY][targetX].containsUnit[unit].containsUnit.length == 0){
-					return c.world.map.grid[targetY][targetX].containsUnit[unit];
+			for (var u in c.world.map.grid[targetY][targetX].containsUnit){
+				if (c.world.map.grid[targetY][targetX].containsUnit[u].interfaceActions.indexOf("unload") > -1 && c.world.map.grid[targetY][targetX].containsUnit[u].containsUnit.length == 0){
+					return c.world.map.grid[targetY][targetX].containsUnit[u];
 				}
 			}
 		}
@@ -261,7 +172,7 @@ function produceResourcesFor(coords,tile,resource,amount,produceSecondary,civ){
 
 function getClosestCity(civ,coords){
 	return c.world.civilisations[civ].cities[0];
-	//MAKE THIS ACTUALLY GET THE CLOSEST CITY LATER
+	//TODO: MAKE THIS ACTUALLY GET THE CLOSEST CITY LATER
 }
 
 function countSettlers(civ){
@@ -290,12 +201,12 @@ function countWorkers(civ){
 
 function purchase(civ,cost){
 	//first check affordability
-	for (var resource in cost){
-		if (c.world.civilisations[civ].resources[resource] < cost[resource]()) return false;
+	for (var checkResource in cost){
+		if (c.world.civilisations[civ].resources[checkResource] < cost[checkResource]()) return false;
 	}
 	//then pay
-	for (var resource in cost){
-		c.world.civilisations[civ].resources[resource] -= cost[resource]();
+	for (var payResource in cost){
+		c.world.civilisations[civ].resources[payResource] -= cost[payResource]();
 	}
 	return true;
 }
@@ -308,12 +219,12 @@ function prettify(input){
 		output = input.toString();
 		var characteristic = '', //the bit that comes before the decimal point
 			mantissa = '', //the bit that comes afterwards
-			digitCount = 0;
+			digitCount = 0,
 			delimiter = "&#8239;"; //thin space is the ISO standard thousands delimiter. we need a non-breaking version
 
 		//first split the string on the decimal point, and assign to the characteristic and mantissa
 		var parts = output.split('.');
-		if (typeof parts[1] === 'string') var mantissa = '.' + parts[1]; //check it's defined first, and tack a decimal point to the start of it
+		if (typeof parts[1] === 'string') mantissa = '.' + parts[1]; //check it's defined first, and tack a decimal point to the start of it
 
 		//then insert the commas in the characteristic
 		var charArray = parts[0].split(""); //breaks it into an array
@@ -337,7 +248,7 @@ function costToString(cost){
 	} else {
 		var output = "";
 		for (var resource in cost){
-			if (!output == "") output += ", ";
+			if (output != "") output += ", ";
 			output += c.params.resources[resource].name.en;
 			output += ": ";
 			output += cost[resource]();
@@ -347,7 +258,7 @@ function costToString(cost){
 }
 
 function updateBlink(time){
-	var BPM = (1000*60/125)
+	var BPM = (1000*60/125);
 	c.blink = Math.floor(time/BPM) % 2;
 }
 
@@ -382,12 +293,12 @@ function saveGame(saveType){
 	_gaq.push(['_trackEvent', 'CivClicker II', 'Save', saveType]);
 }
 function loadGame(loadType){
-	var player, setttings, world;
+	var player, settings, world;
 	if (loadType == "import"){
 		try {
 			//console.log($('#impExpField').val());
 			
-			var compressed = $('#impExpField').val();
+			var compressed = document.getElementById('impExpField').value;
 			var decompressed = LZString.decompressFromBase64(compressed);
 			var revived = JSON.parse(decompressed);
 			player = revived[0];
@@ -403,8 +314,7 @@ function loadGame(loadType){
 		if (settings) c.settings = settings;
 		if (world) c.world = world;
 		
-		randomSeed(c.player.seed);
-        noiseSeed(c.player.seed);
+		seed(c.player.seed);
 		setContains();
 		versionCheck();
 	} else {
@@ -510,6 +420,6 @@ function spendResource(civ, resource, amount){
 	}
 	cityArray.sort(function(a,b){
 		return b[1] - a[1];
-	})
+	});
 	return cityArray;
 }

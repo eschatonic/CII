@@ -5,8 +5,7 @@
 <meta name="description" content="CivClicker II: Click to build a Civilisation - dhmholley.co.uk" />
 <link rel="stylesheet" type="text/css" href="style.css" />
 
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="libs/p5.min.js"></script>
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="libs/toast.js"></script>
 <script src="libs/lz-string.js"></script>
 <script type="text/javascript">
@@ -22,10 +21,14 @@
 	  })();
 </script>
 </head>
-<body>
+<body onload="setup()">
+<script src="cii-base.js"></script>
 <script src="cii-gameLoop.js"></script>
 <script src="cii-interface.js"></script>
+<script src="cii-drawing.js"></script>
 <script src="cii-data.js"></script>
+<script src="cii-worldgen.js"></script>
 <script src="cii-functions.js"></script>
+<script src="cii-random.js"></script>
 </body>
 </html>

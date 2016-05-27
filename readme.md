@@ -14,15 +14,15 @@ Links
 * [Development Roadmap](https://trello.com/b/eWHaPNWU/civclicker-ii)
 * [/r/CivClicker](http://www.reddit.com/r/civclicker)
 * [Unofficial Wiki](http://civ-clicker.wikia.com/wiki/Civ_Clicker_Wiki)
-* [CivClicker Classic](http://dhmholley.co.uk/civclicker.html)
+* [CivClicker Classic](http://dhmstark.co.uk/civclicker.html)
 
 Uses
 ----
 
-* [p5.js](http://p5js.org)
+* [lz-string.js](http://pieroxy.net/blog/pages/lz-string/index.html)
 * [toast.js](https://github.com/srackham/toast.js)
 
 License
 ----
 
-&copy; 2014 dhmholley
+&copy; 2014-2016 David Stark

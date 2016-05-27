@@ -1,51 +1,60 @@
 //Interface constructor
 function Interface(){
-    var interface = document.createElement("div");
-    interface.id = "interface";
-    document.body.appendChild(interface);
-    $('#interface').width(c.settings.interfaceWidth);
-    $('#interface').height(c.settings.mapY * c.settings.squareSize);
-	
-	$('#interface').append("<div id='tab-container'></div>");
-	
-	$('#tab-container').append("<div class='tab tab-selected' id='tab-game'>Game</div>");
-	$('#tab-container').append("<div class='tab' id='tab-options'>Options</div>");
-	$('#tab-container').append("<div class='tab' id='tab-about'>About</div>");
-	
-	$('#interface').append("<div id='pane-game' class='pane pane-selected'></div>");
-	$('#interface').append("<div id='pane-options' class='pane'></div>");
-	$('#interface').append("<div id='pane-about' class='pane'></div>");
+    var i = document.createElement("div");
+    i.id = "interface";
+    document.body.appendChild(i);
+	var $interface = $('#interface');
+
+	$interface
+		.width(c.settings.interfaceWidth)
+		.height(c.settings.mapY * c.settings.squareSize);
+
+	$interface.append("<div id='tab-container'></div>");
+	var $tabContainer = $('#tab-container');
+
+	$tabContainer.append("<div class='tab tab-selected' id='tab-game'>Game</div>")
+		.append("<div class='tab' id='tab-options'>Options</div>")
+		.append("<div class='tab' id='tab-about'>About</div>");
+
+	$interface.append("<div id='pane-game' class='pane pane-selected'></div>")
+		.append("<div id='pane-options' class='pane'></div>")
+		.append("<div id='pane-about' class='pane'></div>");
 	
 	var tabWidth = c.settings.interfaceWidth / document.getElementsByClassName("tab").length;
 	$('.tab').css("width",tabWidth + "px");
+
+	var $paneGame = $('#pane-game');
+	var $paneOptions = $('#pane-options');
+	var $paneAbout = $('#pane-about');
+
+	$paneGame.append("<table class='resources'></table>")
+		.append("<div class='focus'></div>")
+		.append("<div class='selected'></div>");
 	
-	$('#pane-game').append("<table class='resources'></table>");
-    $('#pane-game').append("<div class='focus'></div>");
-    $('#pane-game').append("<div class='selected'></div>");
-	
-	$('#pane-options').append("<div>&nbsp;</div>");
-	$('#pane-options').append("<div><button onclick='saveGame(\"manual\")'>Save</button>&nbsp;<button id='autosaveToggle' onclick='toggleAutosave()'>" + (c.player.disableAutosave ? "Enable" : "Disable") + " Autosave</button>&nbsp;<button onclick='deleteSave()'>Delete Save</button>");
-	$('#pane-options').append("<div id='impExp'></div>");
-	$('#pane-options').append("<div>&nbsp;</div>");
-	$('#pane-options').append("<div>Seed: " + c.player.seed + "</div>");
-	
-	$('#impExp').append('<textarea id="impExpField"></textarea>');
-	$('#impExp').append('<button class="export" onclick="saveGame(\'export\');">Export Save</button>');
-	$('#impExp').append('<button class="import" onclick="loadGame(\'import\');">Import Save</button>');
-    
-	$('#pane-about').append("<h1>CivClicker II</h1><div>&copy;2015 David Stark</div>");
-	$('#pane-about').append("<div>version " + c.version + "</div>");
-	$('#pane-about').append("<div>&nbsp;</div>");
-	$('#pane-about').append("<div><s><a href=''>Frequently Asked Questions</a></s></div>");
-	$('#pane-about').append("<div><s><a href=''>Latest Updates</a></s></div>");
-	$('#pane-about').append("<div><a href='https://www.passle.net/p/2fkw/civclicker-ii-development-blog'>Development Blog</a></div>");
-	$('#pane-about').append("<div><a href='https://trello.com/b/eWHaPNWU/civclicker-ii'>Development Roadmap</a></div>");
-	$('#pane-about').append("<div>&nbsp;</div>");
-	$('#pane-about').append("<div><a href='http://www.reddit.com/r/civclicker'>/r/CivClicker</a></div>");
-	$('#pane-about').append("<div><a href='http://civ-clicker.wikia.com/wiki/Civ_Clicker_Wiki'>Unofficial Wiki</a></div>");
-	$('#pane-about').append("<div>&nbsp;</div>");
-	$('#pane-about').append("<div><a href='http://dhmholley.co.uk/civclicker.html'>CivClicker Classic</a></div>");
-	
+	$paneOptions.append("<div>&nbsp;</div>")
+		.append("<div><button onclick='saveGame(\"manual\")'>Save</button>&nbsp;<button id='autosaveToggle' onclick='toggleAutosave()'>" + (c.player.disableAutosave ? "Enable" : "Disable") + " Autosave</button>&nbsp;<button onclick='deleteSave()'>Delete Save</button>")
+		.append("<div id='impExp'></div>")
+		.append("<div>&nbsp;</div>")
+		.append("<div>Seed: " + c.player.seed + "</div>");
+
+	var impExp = $('#impExp');
+
+	impExp.append('<textarea id="impExpField"></textarea>')
+		.append('<button class="export" onclick="saveGame(\'export\');">Export Save</button>')
+		.append('<button class="import" onclick="loadGame(\'import\');">Import Save</button>');
+
+	var year = new Date().getFullYear();
+	$paneAbout.append("<h1>CivClicker II</h1><div>&copy;" + year + " David Stark</div>")
+		.append("<div>version " + c.version + "</div>")
+		.append("<div>&nbsp;</div>")
+		.append("<div><s><a href=''>Frequently Asked Questions</a></s></div>")
+		.append("<div><s><a href=''>Latest Updates</a></s></div>")
+		.append("<div><a href='https://www.passle.net/p/2fkw/civclicker-ii-development-blog'>Development Blog</a></div>")
+		.append("<div><a href='https://trello.com/b/eWHaPNWU/civclicker-ii'>Development Roadmap</a></div>")
+		.append("<div>&nbsp;</div>")
+		.append("<div><a href='http://www.reddit.com/r/civclicker'>/r/CivClicker</a></div>")
+		.append("<div><a href='http://civ-clicker.wikia.com/wiki/Civ_Clicker_Wiki'>Unofficial Wiki</a></div>");
+
 	this.settings = {
 		zoomLevel:1,
 		gridFocusX:0,
@@ -69,11 +78,11 @@ function Interface(){
 			if (c.params.resources[resource].active){
 				strResources += "<tr class='resource'><td class='resource-name'>";
 				strResources += c.params.resources[resource].name.en;
-				strResources += ": </td><td class='resource-value'>"
+				strResources += ": </td><td class='resource-value'>";
 				//strResources += prettify(c.world.civilisations[0].resources[resource]);
 				strResources += prettify(sumResource(0,resource));
 				strResources += "</td><td class='resource-icon'>";
-				strResources += "<span class='icon-" + resource + "'></span>"
+				strResources += "<span class='icon-" + resource + "'></span>";
 				strResources += "</td></tr>"
 			}
         }
@@ -102,9 +111,9 @@ function Interface(){
         
         //selected (only updates when necessary, because this contains actual controls)
         if (updateSelected){
-            var selectedStr = ""
+            var selectedStr = "";
             if (c.selected){
-                var civ = c.world.civilisations[c.selected.civilisation]
+                var civ = c.world.civilisations[c.selected.civilisation];
                 var name = c.selected.unitType ? c.params.unitTypes[c.selected.unitType].name.en : c.selected.name;
                 selectedStr += "<div>" + civ.name + " - " + name + "</div>";
 				selectedStr += "<div>" + c.params.terrain[c.world.map.grid[c.selected.location.y][c.selected.location.x].terrain].name.en + "</div>";
@@ -136,144 +145,12 @@ function Interface(){
     };
 }
 
-function Particle(img,y,x,life){
-	this.img = loadImage(img);
-	this.y = y;
-	this.x = x;
-	this.lifetime = life;
-	this.life = Math.random() * life;
-	this.uid = Math.random();
-
-	this.move = function(){
-		this.life -= c.interface.particles.length;
-		if (this.life < 0){
-			c.interface.particles.splice(c.interface.particles.indexOf(this),1);
-			return false;
-		}
-		this.y -= this.uid * 2;
-		this.x += this.uid - 0.5;
-	}
-	this.draw = function(){
-		imageMode(CENTER)
-		if (this.life < this.lifetime / 2){
-			tint(255,this.life/this.lifetime * 2 * 255);
-		} else {
-			tint(255,255);
-		}
-		image(this.img,this.x,this.y,18,18);
-	}
-}
-
-//drawing
-function drawMap(map,gridFocusY,gridFocusX){
-	//focus defaults
-	if (!gridFocusX) gridFocusX = 0;
-	if (!gridFocusY) gridFocusY = 0;
-	
-	for (var y=0; y<c.settings.mapY; y++){
-		for (var x=0; x<c.settings.mapX; x++){
-			if (map.grid[y][x].explored){
-				var terrain = map.grid[y][x].terrain;
-				fill(c.params.terrain[terrain].color.red, c.params.terrain[terrain].color.green, c.params.terrain[terrain].color.blue);
-				rect(c.settings.squareSize * (x - c.interface.settings.gridFocusX) * c.interface.settings.zoomLevel, c.settings.squareSize * (y - c.interface.settings.gridFocusY) * c.interface.settings.zoomLevel, c.settings.squareSize * c.interface.settings.zoomLevel, c.settings.squareSize * c.interface.settings.zoomLevel);
-				if (map.grid[y][x].owned >= 0) drawBorders(y,x);
-			}
-		}
-	}
-}
-function drawBorders(y,x){
-    var owner = c.world.map.grid[y][x].owned;
-    stroke(c.world.civilisations[owner].color.red,c.world.civilisations[owner].color.green,c.world.civilisations[owner].color.blue);
-    if (c.world.map.grid[getTargetY(y-1)][getTargetX(x)].owned != owner) line(
-		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel
-	);
-    if (c.world.map.grid[getTargetY(y+1)][getTargetX(x)].owned != owner) line(
-		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y + 1 - c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y + 1 - c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel
-	);
-    if (c.world.map.grid[getTargetY(y)][getTargetX(x-1)].owned != owner) line(
-		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((x-c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y + 1 - c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel
-	);
-    if (c.world.map.grid[getTargetY(y)][getTargetX(x+1)].owned != owner) line(
-		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y-c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((x + 1 - c.interface.settings.gridFocusX)*c.settings.squareSize)*c.interface.settings.zoomLevel,
-		((y + 1 - c.interface.settings.gridFocusY)*c.settings.squareSize)*c.interface.settings.zoomLevel
-	);
-    stroke(0,0,0);
-}
-function drawCivilisation(civ){
-	for (var city in civ.cities){
-		drawCity(civ.cities[city],civ.color);
-	}
-	for (var unit in civ.units){
-		drawUnit(civ.units[unit],civ.color);
-	}
-}
-function drawCity(city,color){
-	var y = city.location.y;
-	var x = city.location.x;
-	if (c.world.map.grid[y][x].explored){
-		textAlign("center");
-		textStyle(BOLD);
-		textSize(20);
-		fill(color.red,color.green,color.blue);
-		text(
-			city.name,
-			((c.settings.squareSize) * (x + 0.5 - c.interface.settings.gridFocusX)) * c.interface.settings.zoomLevel,
-			((c.settings.squareSize) * (y - 0.3 - c.interface.settings.gridFocusY)) * c.interface.settings.zoomLevel
-		);
-		if (city == c.selected && c.blink){
-			stroke(255,255,0);
-		}
-		rect(
-			(x-c.interface.settings.gridFocusX)*c.settings.squareSize*c.interface.settings.zoomLevel,
-			(y-c.interface.settings.gridFocusY)*c.settings.squareSize*c.interface.settings.zoomLevel,
-			c.settings.squareSize * c.interface.settings.zoomLevel,
-			c.settings.squareSize * c.interface.settings.zoomLevel
-		);
-		stroke(0);
-		textAlign("left");
-		textStyle(NORMAL);
-	}
-}
-function drawUnit(unit,color){
-	if (!unit.hidden) {
-		if (unit == c.selected && c.blink){
-			stroke(255,255,0);
-		} else {
-			stroke(0);
-		};
-		fill(color.red,color.green,color.blue);
-		ellipse(
-			(unit.location.x-c.interface.settings.gridFocusX)*c.settings.squareSize*c.interface.settings.zoomLevel + c.settings.squareSize*c.interface.settings.zoomLevel/2,
-			(unit.location.y-c.interface.settings.gridFocusY)*c.settings.squareSize*c.interface.settings.zoomLevel + c.settings.squareSize*c.interface.settings.zoomLevel/2,
-			c.settings.squareSize*c.interface.settings.zoomLevel - 4,
-			c.settings.squareSize*c.interface.settings.zoomLevel - 4
-		);
-	}
-}
-function drawParticles(){
-	for (var particle in c.interface.particles){
-		c.interface.particles[particle].move();
-		c.interface.particles[particle].draw();
-	}
-}
-
 //Input
 function checkInput(){
-    if (mouseX < c.settings.mapX * c.settings.squareSize){
-        if (mouseY < (c.settings.mapY) * c.settings.squareSize){
-			var squareY = Math.floor((mouseY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-			var squareX = Math.floor((mouseX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
+    if (c.interface.mouseX < c.settings.mapX * c.settings.squareSize){
+        if (c.interface.mouseY < (c.settings.mapY) * c.settings.squareSize){
+			var squareY = Math.floor((c.interface.mouseY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
+			var squareX = Math.floor((c.interface.mouseX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
             if (squareY <= c.settings.mapY && squareX <= c.settings.mapX){
 				c.settings.focus = c.world.map.grid[squareY][squareX];
 			} else {
@@ -282,67 +159,74 @@ function checkInput(){
         }
     }
 }
-function mouseClicked(evt){
 
-	if (mouseButton == 'left'){
-		if (evt.target.className === "tab"){
-			//change selected tab
-			$('.tab.tab-selected').removeClass('tab-selected');
-			evt.target.className = 'tab tab-selected';
-			//change selected pane
-			$('.pane.pane-selected').removeClass('pane-selected');
-			targetPaneId = "#pane-" + evt.target.id.split("-")[1];
-			$(targetPaneId).addClass('pane-selected');
-		} else if (mouseX < c.settings.mapX * c.settings.squareSize){
-			if (mouseY < c.settings.mapY * c.settings.squareSize){
-				var squareY = Math.floor((mouseY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-				var squareX = Math.floor((mouseX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-				//if there is a unit or a city
-				if (c.world.map.grid[squareY][squareX].containsUnit.length > 0 || c.world.map.grid[squareY][squareX].containsCity) {
-					//first attempt to cycle to the next unit
-					selectedIndex = c.world.map.grid[squareY][squareX].containsUnit.indexOf(c.selected) + 1; //will return -1 unless one of the units is already selected, meaning that it defaults to the first unit in the array
-					//next check if we're past the end of the unit list
-					if (selectedIndex >= c.world.map.grid[squareY][squareX].containsUnit.length){
-						//if so, attempt to select a city
-						if (c.world.map.grid[squareY][squareX].containsCity){
-							select(c.world.map.grid[squareY][squareX].containsCity);
-						} else {
-							// if not, select the first unit again
-							select(c.world.map.grid[squareY][squareX].containsUnit[0])
-						}
+$(document).on("mousemove", function(evt){
+	if (c.interface) {
+		c.interface.mouseX = event.pageX;
+		c.interface.mouseY = event.pageY;
+	}
+});
+
+$(document).on("click",function(evt){
+	if (evt.target.className === "tab"){
+		//change selected tab
+		$('.tab.tab-selected').removeClass('tab-selected');
+		evt.target.className = 'tab tab-selected';
+		//change selected pane
+		$('.pane.pane-selected').removeClass('pane-selected');
+		var targetPaneId = "#pane-" + evt.target.id.split("-")[1];
+		$(targetPaneId).addClass('pane-selected');
+	} else if (c.interface.mouseX < c.settings.mapX * c.settings.squareSize){
+		if (c.interface.mouseY < c.settings.mapY * c.settings.squareSize){
+			var squareY = Math.floor((c.interface.mouseY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
+			var squareX = Math.floor((c.interface.mouseX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
+			//if there is a unit or a city
+			if (c.world.map.grid[squareY][squareX].containsUnit.length > 0 || c.world.map.grid[squareY][squareX].containsCity) {
+				//first attempt to cycle to the next unit
+				var selectedIndex = c.world.map.grid[squareY][squareX].containsUnit.indexOf(c.selected) + 1; //will return -1 unless one of the units is already selected, meaning that it defaults to the first unit in the array
+				//next check if we're past the end of the unit list
+				if (selectedIndex >= c.world.map.grid[squareY][squareX].containsUnit.length){
+					//if so, attempt to select a city
+					if (c.world.map.grid[squareY][squareX].containsCity){
+						select(c.world.map.grid[squareY][squareX].containsCity);
 					} else {
-						//we're not past the end of the list so just go ahead and select that unit
-						select(c.world.map.grid[squareY][squareX].containsUnit[selectedIndex])
+						// if not, select the first unit again
+						select(c.world.map.grid[squareY][squareX].containsUnit[0])
 					}
 				} else {
-					//you clicked on open land!
-					select(false);
-					if (c.world.map.grid[squareY][squareX].explored){
-						for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
-							produceResourcesFor([squareY,squareX],c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
-							if (c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource] > 0) c.interface.particles.push(new Particle(c.params.resources[resource].url,mouseY,mouseX,120));
-						}
-						
+					//we're not past the end of the list so just go ahead and select that unit
+					select(c.world.map.grid[squareY][squareX].containsUnit[selectedIndex])
+				}
+			} else {
+				//you clicked on open land!
+				select(false);
+				if (c.world.map.grid[squareY][squareX].explored){
+					for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
+						produceResourcesFor([squareY,squareX],c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
+						//disabling for now because it's resource intensive and the draw functions are not yet implemented
+						//if (c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource] > 0) c.interface.particles.push(new Particle(c.params.resources[resource].url,c.interface.mouseY,c.interface.mouseX,120));
 					}
+
 				}
 			}
 		}
 	}
-}
-function keyPressed() {
-    if (keyCode === UP_ARROW) {
+});
+$(document).on("keydown", function(evt){
+    if (evt.keyCode === UP_ARROW) {
         if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,-1,0,c.selected.hidden);
-    } else if (keyCode === DOWN_ARROW) {    
+    } else if (evt.keyCode === DOWN_ARROW) {
         if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,1,0,c.selected.hidden);
-    } else if (keyCode === LEFT_ARROW) {
+    } else if (evt.keyCode === LEFT_ARROW) {
         if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,0,-1,c.selected.hidden);
-    } else if (keyCode === RIGHT_ARROW) {
+    } else if (evt.keyCode === RIGHT_ARROW) {
         if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,0,1,c.selected.hidden);
-    } else if (keyCode === RETURN) {}
+    } else if (evt.keyCode === RETURN) {}
 	c.interface.update(true);
-}
+});
 
 document.addEventListener("DOMMouseScroll",mouseWheel,false); //firefox
+document.addEventListener("mousewheel",mouseWheel,false); //firefox
 function mouseWheel(evt){
 	var wheelDelta = (evt.wheelDelta) ? evt.wheelDelta : evt.detail * -1;
 	

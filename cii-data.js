@@ -2,7 +2,7 @@
 //constructors, objects, and methods for manipulating the data structure
 
 var c = {
-	version:"0.0.5",
+	version:"0.1.0",
     //dynamic
 	interface:false,
     selected:false,
@@ -237,7 +237,7 @@ function Terrain(en,color,pfood,pwood,pstone,foundable,improvements){
 function UnitType(en,cost,traverse,actions){
     this.name = {
         en:en
-    }
+    };
     this.cost = cost;
     this.traverse = traverse;
     this.actions = actions;
@@ -287,10 +287,11 @@ function Civilisation(isPlayer,index){
 	this.cities = [];
 	this.units = [];
 	this.techs = [];
-	
+
+	if (c.world.map.startingLocs.length === 0) throw new Error("No starting locations found. Seed: " + c.player.seed);
 	this.startingLocation = c.world.map.startingLocs[Math.floor(random() * c.world.map.startingLocs.length)];
 	this.units.push(new Unit(index,"settler",this.startingLocation[0],this.startingLocation[1]));
-	if (isPlayer){
+	if (this.isPlayer){
     	explore(this.startingLocation[0]+1,this.startingLocation[1]);
     	explore(this.startingLocation[0]-1,this.startingLocation[1]);
     	explore(this.startingLocation[0],this.startingLocation[1]+1);
