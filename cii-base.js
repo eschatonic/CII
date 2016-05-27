@@ -1,7 +1,7 @@
 //constants - TODO: need to tidy references to these
-const BOLD = "";
-const NORMAL = "";
-const CENTER = "";
+const BOLD = "bold";
+const NORMAL = "normal";
+const CENTER = "center";
 const windowHeight = window.innerHeight;
 const UP_ARROW = 38;
 const LEFT_ARROW = 37;
@@ -25,9 +25,17 @@ function clear(){
 
 //Colour settings
 function stroke(red, green, blue){
+	if (typeof green === "undefined" && typeof blue === "undefined"){
+		green = red;
+		blue = red;
+	}
 	c.ctx.strokeStyle = "rgb(" + red + "," + green + "," + blue + ")";
 }
 function fill(red, green, blue){
+	if (typeof green === "undefined" && typeof blue === "undefined"){
+		green = red;
+		blue = red;
+	}
 	c.ctx.fillStyle = "rgb(" + red + "," + green + "," + blue + ")";
 }
 
@@ -37,28 +45,28 @@ function rect(x, y, dx, dy, stroke){
 	if (stroke) c.ctx.strokeRect(x, y, dx, dy);
 }
 function line(x, y, dx, dy){
-	throw new NotImplementedError();
+	c.ctx.beginPath();
+	c.ctx.moveTo(x, y);
+	c.ctx.lineTo(dx, dy);
+	c.ctx.stroke();
 }
 function circle(x, y, r, stroke){
 	c.ctx.beginPath();
 	c.ctx.arc(x, y, r, 0, Math.PI * 2);
-	c.ctx.closePath();
 	c.ctx.fill();
 	if (stroke) c.ctx.stroke();
 }
 
 //Text functions
 function textAlign(alignment){
-	throw new NotImplementedError();
+	c.ctx.textAlign = alignment;
 }
-function textStyle(style){
-	throw new NotImplementedError();
+function font(font){
+	c.ctx.font = font;
 }
-function textSize(size){
-	throw new NotImplementedError();
-}
-function text(text, x, y){
-	throw new NotImplementedError();
+function text(text, x, y, stroke){
+	c.ctx.fillText(text, x, y);
+	if (stroke) ctx.strokeText(text, x, y);
 }
 
 //Image functions

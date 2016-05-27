@@ -1,8 +1,8 @@
 //Interface constructor
-function Interface(){
+function Interface($container){
     var i = document.createElement("div");
     i.id = "interface";
-    document.body.appendChild(i);
+    $container[0].appendChild(i);
 	var $interface = $('#interface');
 
 	$interface
@@ -143,14 +143,16 @@ function Interface(){
             }
         }
     };
+
+	bindInterfaceEvents();
 }
 
 //Input
 function checkInput(){
-    if (c.interface.mouseX < c.settings.mapX * c.settings.squareSize){
-        if (c.interface.mouseY < (c.settings.mapY) * c.settings.squareSize){
-			var squareY = Math.floor((c.interface.mouseY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-			var squareX = Math.floor((c.interface.mouseX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
+    if (c.ui.mouseX < c.settings.mapX * c.settings.squareSize){
+        if (c.ui.mouseY < (c.settings.mapY) * c.settings.squareSize){
+			var squareY = Math.floor((c.ui.mouseY + (c.ui.settings.gridFocusY * c.settings.squareSize * c.ui.settings.zoomLevel))/(c.settings.squareSize * c.ui.settings.zoomLevel));
+			var squareX = Math.floor((c.ui.mouseX + (c.ui.settings.gridFocusX * c.settings.squareSize * c.ui.settings.zoomLevel))/(c.settings.squareSize * c.ui.settings.zoomLevel));
             if (squareY <= c.settings.mapY && squareX <= c.settings.mapX){
 				c.settings.focus = c.world.map.grid[squareY][squareX];
 			} else {
@@ -160,99 +162,72 @@ function checkInput(){
     }
 }
 
-$(document).on("mousemove", function(evt){
-	if (c.interface) {
-		c.interface.mouseX = event.pageX;
-		c.interface.mouseY = event.pageY;
-	}
-});
+function bindInterfaceEvents() {
+	$(document).on("mousemove", function (evt) {
+		if (c.ui) {
+			c.ui.mouseX = event.pageX;
+			c.ui.mouseY = event.pageY;
+		}
+	});
 
-$(document).on("click",function(evt){
-	if (evt.target.className === "tab"){
-		//change selected tab
-		$('.tab.tab-selected').removeClass('tab-selected');
-		evt.target.className = 'tab tab-selected';
-		//change selected pane
-		$('.pane.pane-selected').removeClass('pane-selected');
-		var targetPaneId = "#pane-" + evt.target.id.split("-")[1];
-		$(targetPaneId).addClass('pane-selected');
-	} else if (c.interface.mouseX < c.settings.mapX * c.settings.squareSize){
-		if (c.interface.mouseY < c.settings.mapY * c.settings.squareSize){
-			var squareY = Math.floor((c.interface.mouseY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-			var squareX = Math.floor((c.interface.mouseX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-			//if there is a unit or a city
-			if (c.world.map.grid[squareY][squareX].containsUnit.length > 0 || c.world.map.grid[squareY][squareX].containsCity) {
-				//first attempt to cycle to the next unit
-				var selectedIndex = c.world.map.grid[squareY][squareX].containsUnit.indexOf(c.selected) + 1; //will return -1 unless one of the units is already selected, meaning that it defaults to the first unit in the array
-				//next check if we're past the end of the unit list
-				if (selectedIndex >= c.world.map.grid[squareY][squareX].containsUnit.length){
-					//if so, attempt to select a city
-					if (c.world.map.grid[squareY][squareX].containsCity){
-						select(c.world.map.grid[squareY][squareX].containsCity);
-					} else {
-						// if not, select the first unit again
-						select(c.world.map.grid[squareY][squareX].containsUnit[0])
-					}
-				} else {
-					//we're not past the end of the list so just go ahead and select that unit
-					select(c.world.map.grid[squareY][squareX].containsUnit[selectedIndex])
-				}
-			} else {
-				//you clicked on open land!
-				select(false);
-				if (c.world.map.grid[squareY][squareX].explored){
-					for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
-						produceResourcesFor([squareY,squareX],c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
-						//disabling for now because it's resource intensive and the draw functions are not yet implemented
-						//if (c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource] > 0) c.interface.particles.push(new Particle(c.params.resources[resource].url,c.interface.mouseY,c.interface.mouseX,120));
-					}
-
-				}
+	$(document).on("click", function (evt) {
+		if (evt.target.className === "tab") {
+			//change selected tab
+			$('.tab.tab-selected').removeClass('tab-selected');
+			evt.target.className = 'tab tab-selected';
+			//change selected pane
+			$('.pane.pane-selected').removeClass('pane-selected');
+			var targetPaneId = "#pane-" + evt.target.id.split("-")[1];
+			$(targetPaneId).addClass('pane-selected');
+		} else if (c.ui.mouseX < c.settings.mapX * c.settings.squareSize) {
+			if (c.ui.mouseY < c.settings.mapY * c.settings.squareSize) {
+				canvasClick();
 			}
 		}
-	}
-});
-$(document).on("keydown", function(evt){
-    if (evt.keyCode === UP_ARROW) {
-        if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,-1,0,c.selected.hidden);
-    } else if (evt.keyCode === DOWN_ARROW) {
-        if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,1,0,c.selected.hidden);
-    } else if (evt.keyCode === LEFT_ARROW) {
-        if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,0,-1,c.selected.hidden);
-    } else if (evt.keyCode === RIGHT_ARROW) {
-        if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected,0,1,c.selected.hidden);
-    } else if (evt.keyCode === RETURN) {}
-	c.interface.update(true);
-});
+	});
+	$(document).on("keydown", function (evt) {
+		if (evt.keyCode === UP_ARROW) {
+			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, -1, 0, c.selected.hidden);
+		} else if (evt.keyCode === DOWN_ARROW) {
+			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, 1, 0, c.selected.hidden);
+		} else if (evt.keyCode === LEFT_ARROW) {
+			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, 0, -1, c.selected.hidden);
+		} else if (evt.keyCode === RIGHT_ARROW) {
+			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, 0, 1, c.selected.hidden);
+		} else if (evt.keyCode === RETURN) {
+		}
+		c.ui.update(true);
+	});
 
-document.addEventListener("DOMMouseScroll",mouseWheel,false); //firefox
-document.addEventListener("mousewheel",mouseWheel,false); //firefox
+	document.addEventListener("DOMMouseScroll", mouseWheel, false); //firefox
+	document.addEventListener("mousewheel", mouseWheel, false); //firefox
+
+}
 function mouseWheel(evt){
 	var wheelDelta = (evt.wheelDelta) ? evt.wheelDelta : evt.detail * -1;
 	
-	var squareY = Math.floor((evt.clientY + (c.interface.settings.gridFocusY * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
-	var squareX = Math.floor((evt.clientX + (c.interface.settings.gridFocusX * c.settings.squareSize * c.interface.settings.zoomLevel))/(c.settings.squareSize * c.interface.settings.zoomLevel));
+	var squareY = Math.floor((evt.clientY + (c.ui.settings.gridFocusY * c.settings.squareSize * c.ui.settings.zoomLevel))/(c.settings.squareSize * c.ui.settings.zoomLevel));
+	var squareX = Math.floor((evt.clientX + (c.ui.settings.gridFocusX * c.settings.squareSize * c.ui.settings.zoomLevel))/(c.settings.squareSize * c.ui.settings.zoomLevel));
 	
 	if (wheelDelta > 0){
-		c.interface.settings.zoomLevel += 0.5;
-		if (c.interface.settings.zoomLevel > 3){
-			c.interface.settings.zoomLevel = 3;
+		c.ui.settings.zoomLevel += 0.5;
+		if (c.ui.settings.zoomLevel > 3){
+			c.ui.settings.zoomLevel = 3;
 			return false;
 		}
 	} else {
-		c.interface.settings.zoomLevel -= 0.5;
-		if (c.interface.settings.zoomLevel < 1){
-			c.interface.settings.zoomLevel = 1;
+		c.ui.settings.zoomLevel -= 0.5;
+		if (c.ui.settings.zoomLevel < 1){
+			c.ui.settings.zoomLevel = 1;
 			return false;
 		}
 	}
-	
 	focus(squareY,squareX);
 }
 
 function focus(squareY,squareX){
-	var width = c.settings.mapX / c.interface.settings.zoomLevel;
-	var height = c.settings.mapY / c.interface.settings.zoomLevel;
+	var width = c.settings.mapX / c.ui.settings.zoomLevel;
+	var height = c.settings.mapY / c.ui.settings.zoomLevel;
 	var offsetX = squareX - (width/2);
 	var offsetY = squareY - (height/2);
 	if (offsetX < 0) offsetX = 0;
@@ -260,12 +235,46 @@ function focus(squareY,squareX){
 	if (offsetX > c.settings.mapX - width) offsetX = c.settings.mapX - width;
 	if (offsetY > c.settings.mapY - height) offsetY = c.settings.mapY - height;
 	
-	c.interface.settings.gridFocusY = Math.floor(offsetY);
-	c.interface.settings.gridFocusX = Math.floor(offsetX);
+	c.ui.settings.gridFocusY = Math.floor(offsetY);
+	c.ui.settings.gridFocusX = Math.floor(offsetX);
+}
+
+function canvasClick(){
+	var squareY = Math.floor((c.ui.mouseY + (c.ui.settings.gridFocusY * c.settings.squareSize * c.ui.settings.zoomLevel))/(c.settings.squareSize * c.ui.settings.zoomLevel));
+	var squareX = Math.floor((c.ui.mouseX + (c.ui.settings.gridFocusX * c.settings.squareSize * c.ui.settings.zoomLevel))/(c.settings.squareSize * c.ui.settings.zoomLevel));
+	//if there is a unit or a city
+	if (c.world.map.grid[squareY][squareX].containsUnit.length > 0 || c.world.map.grid[squareY][squareX].containsCity) {
+		//first attempt to cycle to the next unit
+		var selectedIndex = c.world.map.grid[squareY][squareX].containsUnit.indexOf(c.selected) + 1; //will return -1 unless one of the units is already selected, meaning that it defaults to the first unit in the array
+		//next check if we're past the end of the unit list
+		if (selectedIndex >= c.world.map.grid[squareY][squareX].containsUnit.length){
+			//if so, attempt to select a city
+			if (c.world.map.grid[squareY][squareX].containsCity){
+				select(c.world.map.grid[squareY][squareX].containsCity);
+			} else {
+				// if not, select the first unit again
+				select(c.world.map.grid[squareY][squareX].containsUnit[0])
+			}
+		} else {
+			//we're not past the end of the list so just go ahead and select that unit
+			select(c.world.map.grid[squareY][squareX].containsUnit[selectedIndex])
+		}
+	} else {
+		//you clicked on open land!
+		select(false);
+		if (c.world.map.grid[squareY][squareX].explored){
+			for (var resource in c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production){
+				produceResourcesFor([squareY,squareX],c.world.map.grid[squareY][squareX].terrain,resource,c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource],true,0);
+				//disabling for now because it's resource intensive and the draw functions are not yet implemented
+				//if (c.params.terrain[c.world.map.grid[squareY][squareX].terrain].production[resource] > 0) c.ui.particles.push(new Particle(c.params.resources[resource].url,c.ui.mouseY,c.ui.mouseX,120));
+			}
+
+		}
+	}
 }
 
 function select(obj){
     c.selected = obj;
-    if (c.interface) c.interface.update(true);
-	if (obj && c.interface) focus(c.selected.location.y,c.selected.location.x);
+    if (c.ui) c.ui.update(true);
+	if (obj && c.ui) focus(c.selected.location.y,c.selected.location.x);
 }

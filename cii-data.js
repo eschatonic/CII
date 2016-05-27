@@ -1,47 +1,52 @@
 //this should only contain items that are part of the data structure
 //constructors, objects, and methods for manipulating the data structure
 
-var c = {
-	version:"0.1.0",
-    //dynamic
-	interface:false,
-    selected:false,
-	time:new Date().getTime(),
-	timers:{
-	    autoSave:0
-	},
-    
-    //static
-	settings:{
-		lang:"en",
-		delimiters:true,
-		mapX:100,
-		mapY:60,
-		squareSize:10,
-		interfaceWidth:300,
-		map:{
-            noiseScale:0.12,
-			seaLevel:0.52,
-			mountainHeight:0.7,
-			tempNoise:0.17,
-			precNoise:0.5,
-			iceThreshold:0.12
+var c;
+function initialDataSetup() {
+	c = {
+		version: "0.1.0",
+		//dynamic
+		interface: false,
+		selected: false,
+		time: new Date().getTime(),
+		timers: {
+			autoSave: 0
 		},
-		toastDuration:1000,
-		tick:1000,
-		autoSave:60
-	},
-	params:{
-	    arrays:{
-	        land:["desert","savannah","woods","forest","rainforest","swamp","grassland","taiga","tundra","mountains","snowpeaks","ice"]
-	    },
-		resources:{},
-		terrain:{},
-		improvements:{},
-		unitTypes:{},
-		actions:{}
-	}
-};
+
+		//static
+		settings: {
+			lang: "en",
+			delimiters: true,
+			mapX: 100,
+			mapY: 60,
+			squareSize: 10,
+			interfaceWidth: 300,
+			map: {
+				noiseOctaves:5,
+				noiseOctaveFalloff:0.55,
+				noiseScale: 0.32,
+				seaLevel: 0.6,
+				mountainHeight: 0.7,
+				tempNoise: 0.17,
+				precNoise: 0.5,
+				iceThreshold: 0.12
+			},
+			toastDuration: 1000,
+			tick: 1000,
+			autoSave: 60
+		},
+		params: {
+			arrays: {
+				land: ["desert", "savannah", "woods", "forest", "rainforest", "swamp", "grassland", "taiga", "tundra", "mountains", "snowpeaks", "ice"]
+			},
+			resources: {},
+			terrain: {},
+			improvements: {},
+			unitTypes: {},
+			actions: {}
+		}
+	};
+}
 
 function setParams(){
 	c.params.resources.food = new Resource("Food","http://dhmholley.co.uk/cii/icons/food.png",true,"skins",function(amount){

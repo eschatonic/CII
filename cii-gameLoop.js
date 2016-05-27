@@ -1,7 +1,11 @@
 //p5.js initialisation function
 //handles starting
 function setup(){
-    setParams();
+	var $container = $('.container');
+	$container.html("");
+
+    initialDataSetup();
+	setParams();
     var loaded = loadGame();
     
     if (!loaded){
@@ -27,10 +31,10 @@ function setup(){
 	c.settings.squareSize = Math.floor(Math.min(($(document).width()-c.settings.interfaceWidth)/c.settings.mapX,$(document).height()/c.settings.mapY));
 	c.settings.squareSize--;
 
-	createCanvas(c.settings.squareSize * c.settings.mapX,windowHeight-4);
+	createCanvas(c.settings.squareSize * c.settings.mapX,windowHeight-4, $container[0]);
 	
-	c.interface = new Interface();
-	c.interface.update(true);
+	c.ui = new Interface($container);
+	c.ui.update(true);
 	
 	//c.player.name = prompt("What is your name?");
 	//c.world.civilisations[0].name = prompt("Name your Civilisation");
@@ -62,7 +66,7 @@ function draw(){
 		drawCivilisation(c.world.civilisations[civilisation]);
 	}
 	drawParticles();
-    c.interface.update(false);
+    c.ui.update(false);
 }
 
 //main tick loop for incremental portions
