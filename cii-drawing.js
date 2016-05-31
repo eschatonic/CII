@@ -57,11 +57,13 @@ function drawCity(city,color){
 	if (c.world.map.grid[y][x].explored){
 		textAlign("center");
 		font("bold 20px sans-serif")
+		stroke(0);
 		fill(color.red,color.green,color.blue);
 		text(
 			city.name,
 			((c.settings.squareSize) * (x + 0.5 - c.ui.settings.gridFocusX)) * c.ui.settings.zoomLevel,
-			((c.settings.squareSize) * (y - 0.3 - c.ui.settings.gridFocusY)) * c.ui.settings.zoomLevel
+			((c.settings.squareSize) * (y - 0.3 - c.ui.settings.gridFocusY)) * c.ui.settings.zoomLevel,
+			true
 		);
 		if (city == c.selected && c.blink){
 			stroke(255,255,0);
@@ -70,7 +72,8 @@ function drawCity(city,color){
 			(x-c.ui.settings.gridFocusX)*c.settings.squareSize*c.ui.settings.zoomLevel,
 			(y-c.ui.settings.gridFocusY)*c.settings.squareSize*c.ui.settings.zoomLevel,
 			c.settings.squareSize * c.ui.settings.zoomLevel,
-			c.settings.squareSize * c.ui.settings.zoomLevel
+			c.settings.squareSize * c.ui.settings.zoomLevel,
+			true
 		);
 		stroke(0);
 	}
@@ -86,7 +89,8 @@ function drawUnit(unit,color){
 		circle(
 			(unit.location.x-c.ui.settings.gridFocusX)*c.settings.squareSize*c.ui.settings.zoomLevel + c.settings.squareSize*c.ui.settings.zoomLevel/2,
 			(unit.location.y-c.ui.settings.gridFocusY)*c.settings.squareSize*c.ui.settings.zoomLevel + c.settings.squareSize*c.ui.settings.zoomLevel/2,
-			((c.settings.squareSize - 2) * c.ui.settings.zoomLevel)/2
+			((c.settings.squareSize - 2) * c.ui.settings.zoomLevel)/2,
+			true
 		);
 	}
 }

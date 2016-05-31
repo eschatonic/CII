@@ -36,6 +36,12 @@ canvas {
 	border:1px solid black;
 	cursor:pointer;
 }
+.tab:first-child{
+	border-left:none;
+}
+.tab:last-child{
+	border-right:none;
+}
 .tab.tab-selected{
 	border-bottom:none;
 	cursor:auto;

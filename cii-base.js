@@ -64,7 +64,7 @@ function font(font){
 }
 function text(text, x, y, stroke){
 	c.ctx.fillText(text, x, y);
-	if (stroke) ctx.strokeText(text, x, y);
+	if (stroke) c.ctx.strokeText(text, x, y);
 }
 
 //Image functions
