@@ -178,7 +178,6 @@ function setParams(){
 	    if (c.selected.containsUnit.length > 0){
     	    var currentY = c.selected.location.y;
     	    var currentX = c.selected.location.x;
-            var from = c.selected;
     	    select(c.selected.containsUnit[0]);
     	    c.selected.location = {
     	        y:currentY,
@@ -265,8 +264,8 @@ function Map(){
 	this.startingLocs = [];
 }
 function MapSquare(y,x){
-	this.moveMod = 1;
-	this.defMod = 1;
+	//this.moveMod = 1;
+	//this.defMod = 1;
 	this.explored = false;
 	this.owned = -1;
 	this.containsCity = false;
@@ -295,7 +294,7 @@ function Civilisation(isPlayer,index){
 	};
 	this.cities = [];
 	this.units = [];
-	this.techs = [];
+	//this.techs = [];
 
 	if (c.world.map.startingLocs.length === 0) throw new Error("No starting locations found. Seed: " + c.player.seed);
 	this.startingLocation = c.world.map.startingLocs[Math.floor(random() * c.world.map.startingLocs.length)];
@@ -308,9 +307,11 @@ function Civilisation(isPlayer,index){
     	select(this.units[0]);
 	}
 }
+/*
 function Tech(){
 	this.requires = "";
 }
+*/
 function City(civ){
 	this.civilisation = civ;
 	this.resources = {};
@@ -319,19 +320,20 @@ function City(civ){
 	}
 	this.interfaceActions = ["createSettler","createBoat","createWorker","expandBorders"];
 }
-
+/*
 function Production(){
 	this.type = "";
 	this.requires = "";
 	this.cost = "";
 	this.progress = "";
 }
-
+*/
+/*
 function Building(){
 	this.value = 0;
 	this.cost = [];
 }
-
+*/
 function Unit(civ,unitType,y,x){
     this.civilisation = civ;
     this.unitType = unitType;

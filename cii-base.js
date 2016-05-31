@@ -1,6 +1,4 @@
 //constants - TODO: need to tidy references to these
-const BOLD = "bold";
-const NORMAL = "normal";
 const CENTER = "center";
 const windowHeight = window.innerHeight;
 const UP_ARROW = 38;
