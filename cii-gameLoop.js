@@ -1,4 +1,3 @@
-//p5.js initialisation function
 //handles starting
 function setup(){
 	var $container = $('.container');

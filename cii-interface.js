@@ -186,15 +186,26 @@ function bindInterfaceEvents() {
 		}
 	});
 	$(document).off("keydown").on("keydown", function (evt) {
-		if (evt.keyCode === UP_ARROW) {
-			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, -1, 0, c.selected.hidden);
-		} else if (evt.keyCode === DOWN_ARROW) {
-			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, 1, 0, c.selected.hidden);
-		} else if (evt.keyCode === LEFT_ARROW) {
-			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, 0, -1, c.selected.hidden);
-		} else if (evt.keyCode === RIGHT_ARROW) {
-			if (typeof c.selected.unitType !== "undefined") moveUnit(c.selected, 0, 1, c.selected.hidden);
-		} else if (evt.keyCode === RETURN) {
+		if (typeof c.selected.unitType !== "undefined") {
+			if (evt.keyCode === ARROW_UP || evt.keyCode === NUMPAD_UP) {
+				moveUnit(c.selected, -1, 0, c.selected.hidden);
+			} else if (evt.keyCode === ARROW_DOWN || evt.keyCode === NUMPAD_DOWN) {
+				moveUnit(c.selected, 1, 0, c.selected.hidden);
+			} else if (evt.keyCode === ARROW_LEFT || evt.keyCode === NUMPAD_LEFT) {
+				moveUnit(c.selected, 0, -1, c.selected.hidden);
+			} else if (evt.keyCode === ARROW_RIGHT || evt.keyCode === NUMPAD_RIGHT) {
+				moveUnit(c.selected, 0, 1, c.selected.hidden);
+			} else if (evt.keyCode === NUMPAD_UP_LEFT) {
+				moveUnit(c.selected, -1, -1, c.selected.hidden);
+			} else if (evt.keyCode === NUMPAD_UP_RIGHT) {
+				moveUnit(c.selected, -1, 1, c.selected.hidden);
+			} else if (evt.keyCode === NUMPAD_DOWN_LEFT) {
+				moveUnit(c.selected, 1, -1, c.selected.hidden);
+			} else if (evt.keyCode === NUMPAD_DOWN_RIGHT) {
+				moveUnit(c.selected, 1, 1, c.selected.hidden);
+			} else if (evt.keyCode === RETURN) {
+				//nothing yet
+			}
 		}
 		c.ui.update(true);
 	});

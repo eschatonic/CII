@@ -1,10 +1,19 @@
 //constants - TODO: need to tidy references to these
 const CENTER = "center";
 const windowHeight = window.innerHeight;
-const UP_ARROW = 38;
-const LEFT_ARROW = 37;
-const RIGHT_ARROW = 39;
-const DOWN_ARROW = 40;
+
+const ARROW_UP = 38;
+const ARROW_LEFT = 37;
+const ARROW_RIGHT = 39;
+const ARROW_DOWN = 40;
+const NUMPAD_DOWN_LEFT = 97;
+const NUMPAD_DOWN = 98;
+const NUMPAD_DOWN_RIGHT = 99;
+const NUMPAD_LEFT = 100;
+const NUMPAD_RIGHT = 102;
+const NUMPAD_UP_LEFT = 103;
+const NUMPAD_UP = 104;
+const NUMPAD_UP_RIGHT = 105;
 const RETURN = 13;
 
 //Canvas stuff
